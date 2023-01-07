@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html 1ang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initia]-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <title>html基础</title>
+  </head>
+  <body>
+    <div id="Top" style="background-color: #3355bb; overflow: hidden; padding-left: 50px">
+      <h1 style="color: white">电气2204李睿年 html基础练习</h1>
+    </div>
+    <hr />
+
+    <div>
+      <table>
+        <i class="fa fa-server"></i
+        >&nbsp; 目录：
+        <tr>
+          <th>
+            <i class="fa fa-coffee"></i>
+            <a href="#Test">测试</a>
+          </th>
+          <th>
+            <i class="fa fa-question"></i>
+            <a href="#Question">问题</a>
+          </th>
+          <th>
+            <i class="fa fa-file-text"></i>
+            <a href="#Activity">大段文本</a>
+          </th>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div id="Test" style="background-color: #fdffdf">
+      <p>文字测试</p>
+      <h1>h1标题</h1>
+      <h2>h2标题</h2>
+      <h3>h3标题</h3>
+      <h4>h4标题</h4>
+      <h5>h5标题</h5>
+      <h6>h6标题</h6>
+      <p>段落<br />换行</p>
+      <div style="background-color: cyan">div</div>
+      <span style="background-color: cyan"> span</span>
+      <hr />
+
+      <p>图片测试</p>
+      <table>
+        <tr>
+          <th>
+            <div>
+              <img src="./imgs/justice.jpg" alt="正义MEME" title="任何邪恶 终将绳之以法" height="400px" />
+            </div>
+          </th>
+          <th>
+            <div>
+              <img src="./server.jpg" alt="东农教务系统服务器" title="potato" height="400px" />
+            </div>
+          </th>
+          <th>
+            <div>
+              <img src="../nice.gif" alt="nice" title="nice" height="200px" />
+            </div>
+          </th>
+        </tr>
+
+        <tr style="text-align: center">
+          <td>子目录</td>
+          <td>同目录</td>
+          <td>父目录</td>
+        </tr>
+      </table>
+
+      <div style="margin-bottom: 30px">
+        <p>表格测试</p>
+        <table border="2px">
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>年龄</th>
+              <th>性别</th>
+              <th colspan="3" style="background-color: cyan">备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Li Lei</td>
+              <td>18</td>
+              <td>male</td>
+              <td rowspan="2">Student</td>
+              <td>Happy</td>
+              <td>Got good score</td>
+            </tr>
+            <tr>
+              <td>Han Meimei</td>
+              <td>20</td>
+              <td>female</td>
+              <td>Sad</td>
+              <td>We donno</td>
+            </tr>
+            <tr>
+              <td colspan="6" style="text-align: center">What Happened to Han Meimei?</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="Question" style="background-color: #aee8fa; padding: 20px">
+      <h3>
+        问题：无序列表和有序列表在表格内不对齐&nbsp;<a href="#Top"><i class="fa fa-arrow-circle-up"></i></a>
+      </h3>
+
+      <table border="1px">
+        <tr>
+          <th>
+            <p>无序列表</p>
+            <tl>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </tl>
+          </th>
+          <th>
+            <p>有序列表</p>
+            <ol>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </ol>
+          </th>
+        </tr>
+      </table>
+      <h4>尝试修复过程</h4>
+      <p>try { //use css to fix }</p>
+      <p>查询网络后尝试使用style="margin: 0; padding: 0;"</p>
+      <table border="1px">
+        <tr>
+          <th>
+            <p>无序列表</p>
+            <tl style="margin: 0; padding: 0">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </tl>
+          </th>
+          <th>
+            <p>有序列表</p>
+            <ol style="margin: 0; padding: 0">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </ol>
+          </th>
+          <th>
+            <dl>
+              <dt>自定义列表</dt>
+              <dd>1</dd>
+              <dd>2</dd>
+              <dd>3</dd>
+              <dd>4</dd>
+              <dd>5</dd>
+            </dl>
+          </th>
+        </tr>
+      </table>
+      <h4>调节宽度</h4>
+      <p>width="400px"</p>
+      <table border="1px" width="400px">
+        <tr>
+          <th>
+            <p>无序列表</p>
+            <tl style="margin: 0; padding: 0">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </tl>
+          </th>
+          <th>
+            <p>有序列表</p>
+            <ol style="margin: 0; padding: 0">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </ol>
+          </th>
+          <th>
+            <dl>
+              <dt>自定义列表</dt>
+              <dd>1</dd>
+              <dd>2</dd>
+              <dd>3</dd>
+              <dd>4</dd>
+              <dd>5</dd>
+            </dl>
+          </th>
+        </tr>
+      </table>
+      <h4>研究参数</h4>
+      <p>
+        出现文本超过表格的现象似乎并非margin参数的问题 而且tl不受padding限制<br />
+        发现ol的padding不等于0就可以显示在表格内<br />
+        加上magin=0后即可对齐
+      </p>
+      <table border="1px" width="400px">
+        <tr>
+          <th>
+            <p>无序列表</p>
+            <tl style="margin: 0; padding: 0">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </tl>
+          </th>
+          <th>
+            <p>有序列表</p>
+            <ol style="margin: 0; padding: 1">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+            </ol>
+          </th>
+          <th>
+            <dl>
+              <dt>自定义列表</dt>
+              <dd>1</dd>
+              <dd>2</dd>
+              <dd>3</dd>
+              <dd>4</dd>
+              <dd>5</dd>
+            </dl>
+          </th>
+        </tr>
+      </table>
+      <p>参考网站：</p>
+
+      <a href="https://www.cnblogs.com/fangsmile/p/7718153.html" target="_blank"> 博客园: CSS中margin和padding的区别 </a><br />
+      <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/margin" target="_blank"> mdn_webdocs: margin </a><br />
+      <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/padding" target="_blank"> mdn_webdocs: padding </a>
+    </div>
+    <div id="Activity" style="background-color: #bbfddd">
+      <h2>
+        大段文本&nbsp;<a href="#Top"><i class="fa fa-arrow-circle-up"></i></a>
+      </h2>
+      <table>
+        <i class="fa fa-server"></i
+        >&nbsp; 目录：
+        <tr>
+          <th>
+            <i class="fa fa-hand-spock-o"></i>
+            <a href="#Intro">学校介绍</a>
+          </th>
+          <th>
+            <i class="fa fa-book"></i>
+            <a href="#History">历史沿革</a>
+          </th>
+        </tr>
+      </table>
+      <a href="http://www.neau.edu.cn/xygk/xxjs.htm" target="_blank">http://www.neau.edu.cn/xygk/xxjs.htm</a>
+      <h3 id="Intro">学校介绍</h3>
+
+      <p>
+        <span
+          >东北农业大学是一所“以农科为优势，以生命科学和食品科学为特色，农、工、理、经、管等多学科协调发展”的国家“211工程”重点建设大学和世界一流学科建设高校，是黑龙江省人民政府与农业农村部省部共建大学、国家“中西部高校基础能力建设工程”项目入选高校、教育部本科教学工作水平评估优秀院校。</span
+        ><br />
+      </p>
+      <p>
+        学校1948年创建于哈尔滨，始称东北农学院，是中国共产党在解放区创办的第一所普通高等农业院校，知名教育家、哈尔滨市第一任市长刘达为学校第一任院长。建校以来，先后隶属于东北行政委员会农业农村部、国家高等教育部、国家农业农村部、黑龙江省农业委员会、黑龙江省教育厅，1981年被确定为黑龙江省省属重点院校，1994年与黑龙江省农业管理干部学院合并组建东北农业大学。
+      </p>
+      <p>
+        学校设有16个学院和1个教学部。现有3个国家重点学科，3个国家重点（培育）学科，2个农业农村部重点学科，2个省级重点学科群，10个省级一级重点学科，6个学科进入ESI国际学科排名前1%。学校是全国首批具有博士、硕士学位授予权的高等学校之一，现有10个博士学位授权一级学科点，22个硕士学位授权一级学科点；2个博士专业学位授权类别，15个硕士专业学位授权类别；10个博士后科研流动站、2个博士后科研工作站；75个本科专业，国家级特色专业10个，国家级一流本科专业建设点18个、省级一流本科专业建设点30个，入选国家级综合改革试点专业1个。
+      </p>
+      <p>
+        学校现有专任教师1
+        487人，其中教授349人、副教授517人，具有博士学位者972人、硕士学位者429人。现有“长江学者”特聘教授3人、青年学者2人，国家杰出青年科学基金获得者3人，“万人计划”领军人才入选者15人、青年拔尖人才入选者2人，“百千万人才工程”国家级人选5人，国家优秀青年科学基金获得者2人，国务院学位委员会学科评议组成员5人，科技部中青年科技创新领军人才11人，教育部创新团队2个，农业农村部第二批农业科研杰出人才及其创新团队4个，教育部“跨世纪、新世纪优秀人才支持计划”入选者10人，国家级教学团队2个，国家级教学名师3人，教育部高等学校教学指导委员会分委员会副主任委员3人、委员12人，国家现代农业产业技术体系岗位科学家18人，黑龙江省“头雁团队”5个，“龙江学者”特聘教授19人，青年“龙江学者”7人，博士生导师286人。
+      </p>
+      <p>
+        学校现有全日制在校生31107人，其中研究生6 436人、本科生24
+        340人、外国留学生251人，是首批“卓越农林人才教育培养计划”项目试点高校。拥有国家级人才培养模式创新实验区2个，国家级卓越农林人才培养项目2个，国家级精品课程4门、国家级精品资源共享课2门、国家级精品视频公开课4门，国家级精品在线开放课程1门，国家级一流本科课程8门，国家级新农科研究与改革实践项目5个，国家级新工科研究与改革实践项目3个，国家级实验教学示范中心5个，国家级虚拟仿真项目3个，国家级大学生校外实践教育基地4个，国家级农科教合作人才培养基地4个，国家级规划教材5本（第一主编），首届黑龙江省教材建设奖优秀教材15本，全国高校学生科技创业实习基地1个；获得全国“百篇”优秀博士学位论文1篇、提名4篇。学校是国家现代远程教育试点院校，设有全国重点建设职业教育师资培养培训基地。学校是全国毕业生就业典型经验高校。建校至今已累计培养各级各类学生25万余人，其中既有一批站在世界科技前沿的“创新型”人才，也有一批遍布全国的“复合型”人才，更有一大批活跃在黑龙江省和全国农业生产第一线的“应用型”人才。
+      </p>
+      <p>
+        学校现有省部级以上科研平台57个，其中1个国家级工程研究中心，2个国家级工程技术研究中心，3个教育部重点实验室，5个农业农村部重点实验室、1个农业农村部区域试验站、3个农业农村部农业科学观测实验站，4个农业农村部科研基地，1个科技部创新人才培养基地，1个高等学校科技成果转化和技术转移基地，设有国家级大学科技园1个，是高等学校新农村发展研究院首批建设院校之一。建校至今，获得省部级以上科技奖励660项，其中国家自然科学奖、发明奖和科技进步奖37项；先后11次获得黑龙江省省长特别奖和重大科技效益奖，22次被中宣部、教育部、团中央授予“社会实践先进集体”荣誉称号，3次获得黑龙江省“振兴经济奖”，2次获得黑龙江省“粮食生产贡献奖”，并被授予黑龙江省“小康建设红旗集体”荣誉称号。
+      </p>
+      <p>
+        学校坚持开放办学，具有接收中国政府奖学金来华留学生资格，设有教育部赴俄留学培训基地，是中国东北地区与俄罗斯远东、西伯利亚地区大学校长论坛中方秘书处单位。建校至今，已先后与俄罗斯、日本、韩国、美国、加拿大、澳大利亚、爱尔兰等国家的60多所高校及科研单位建立了联系，广泛开展国际交流与合作，并初步形成了“以东北亚为主、博采众长”的国际交流特色。
+      </p>
+      <p>
+        学校占地面积496.4万平方米，总建筑面积123.1万平方米，教学科研仪器设备总值7.64亿元，为首批国家级节约型公共机构示范单位。主办期刊《东北农业大学学报（自然科学版）》《东北农业大学学报（社会科学版）》《东北农业大学学报（英文版）》《中国马铃薯》《饲料博览》《中国乳品工业》《乳品与人类》《农业经济与管理》《大豆科技》《黑龙江纺织》，在国内外公开发行。
+      </p>
+      <p>
+        学校高度重视党建、思想政治工作和精神文明建设。1999年被评为全国教育系统“民主管理先进单位”；2001年荣获全省农业科技工作先进集体；2003年荣获全国“五一劳动奖状”；2006年荣获黑龙江省教育系统师德建设先进单位；2007年荣获全省事业民主管理工作先进单位；2008年荣获省级安全和谐（文明）校园称号；2011年被评为全国“模范职工之家”；2012年被评为全国“创先争优”先进基层党组织，荣获全国“五四红旗团委”称号；2014年荣获全省“十佳和谐校园”称号；2000年、2013年荣获全省文明单位称号，2015年荣获省级文明单位标兵称号，2018年被评为“全国创新创业典型经验高校”，2019年荣获省级文明校园标兵称号，2021年荣获全国先进基层党组织。
+      </p>
+      <p>
+        新时代的东北农业大学，将紧紧抓住国家“双一流”建设的有利时机，继承“艰苦奋斗，自强不息”的精神，弘扬“勤奋、求实、奉献、创新”的校风，围绕国家所需、龙江所要、学校所能和未来所向，满怀信心地向着“国际知名、国内同类院校一流、具有我国北方现代农业特色的多科性、研究教学型和开放式”的高水平农业大学奋进！
+      </p>
+      <p class="vsbcontent_end">（数据统计时间截至2022年3月）</p>
+      <a href="http://www.neau.edu.cn/xygk/lsyg.htm" target="_blank">http://www.neau.edu.cn/xygk/lsyg.htm</a>
+
+      <h3>历史沿革</h3>
+      <ul>
+        <li>
+          <p>1948年 8月，东北农学院筹委会成立，刘达任主任；</p>
+        </li>
+        <li>
+          <p>1948年11月，合并原长春大学农学院；</p>
+        </li>
+        <li>
+          <p>1949年 1月，原东北大学农学院、原东北科学院农林系、原哈尔滨市第一技术专科学校农学科并入东北农学院；</p>
+        </li>
+        <li>
+          <p>1949年 9月，东北农学院正式开学；</p>
+        </li>
+        <li>
+          <p>1950年 1月，东北农学院改名为哈尔滨农学院；</p>
+        </li>
+        <li>
+          <p>1950年10月，沈阳农学院与哈尔滨农学院合并，恢复东北农学院原称；黑龙江省农业专科学校兽医科并入东北农学院；</p>
+        </li>
+        <li>
+          <p>1953年 3月，北京农业机械化学院农学系部分教师调入东北农学院；</p>
+        </li>
+        <li>
+          <p>1994年 2月，东北农学院与黑龙江省农业管理干部学院合并组建为东北农业大学；</p>
+        </li>
+        <li>
+          <p>2004年12月，黑龙江省乳品工业技术开发中心划归东北农业大学；</p>
+        </li>
+        <li>
+          <p>2006年10月，国家大豆工程技术研究中心即黑龙江省大豆技术开发研究中心整体划转东北农业大学。</p>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
