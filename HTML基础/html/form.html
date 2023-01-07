@@ -6,16 +6,43 @@
     <meta name="viewport" content="width=device-width,initia]-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
     <title>表单测试</title>
+    <script type="text/javascript">
+      function _alert() {
+        alert("Hello~ I'm cute!");
+      }
+    </script>
   </head>
   <body>
+    <h2>
+      <i class="fa fa-send"></i>&nbsp;表单&nbsp;<a href="index.html"><i class="fa fa-arrow-circle-up"></i></a>
+    </h2>
+
     <div id="formdiv">
-      <form method="post" action>
+      <form method="get" action>
         姓名：<input type="text" name="name" id="name" /> <br />
         密码：<input type="password" name="pass" id="pass" /><br />
         性别：<input type="radio" name="sex" value="1" />男&nbsp; <input type="radio" name="sex" value="2" />女&nbsp;
         <input type="radio" name="sex" value="3" checked />保密<br />
-        <input type="checkbox" name="remember" id="remember" />记住密码<br />
-        <input type="submit" value="登录" />
+        爱好：&nbsp;<input type="checkbox" id="eat" name="hobby" value="eat" /><label for="eat">吃饭</label>&nbsp;&nbsp;
+        <input type="checkbox" id="sleep" name="hobby" value="sleep" /><label for="sleep">睡觉</label>&nbsp;&nbsp;
+        <input type="checkbox" id="gaming" name="hobby" value="gaming" checked /><label for="gaming">玩游戏</label><br />
+        编程语言：
+        <select>
+          <option value="1">C/C++</option>
+          <option value="2">Java</option>
+          <option value="3">Python/Go/Lua</option>
+          <option value="4" selected>HTML+JavaScript</option></select
+        ><br />
+        对东农的看法<br />
+        <textarea id="neau" name="neau" name="reworkmes" style="overflow: hidden; height: 150px; width: 250px" disabled>
+        你说的对，但是《农带》是由黑龙江省自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「香坊区」的幻想世界，在这里，被神选中的人将被授予「GPA」，导引内卷之力。你将扮演一位名为「大学牲」的神秘角色，在水课中邂逅性格各异、卷到起飞的同伴们，和他们互相击败对方，提高自己——同时，逐步发掘「农带封校」的真相。
+    </textarea
+        >
+
+        <br />
+        <input type="submit" value="提交信息" />
+        <input type="reset" value="重置信息" /><br />
+        <input type="button" value="little_cute_clickable_button" onclick="_alert()" />
       </form>
     </div>
   </body>
