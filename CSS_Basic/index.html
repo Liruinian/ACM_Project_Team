@@ -13,8 +13,10 @@
       <h1>电气2204李睿年 CSS基础</h1>
     </div>
     <hr />
-
-    <div class="guide">
+    <div class="guide" id="guideopener" style="display: none">
+      <button onclick="guide()"><i class="fa fa-arrow-left"></i></button>
+    </div>
+    <div class="guide" id="guide" style="display: block">
       <i class="fa fa-server"></i>&nbsp; 目录：
       <hr />
       <a href="#Test">
@@ -22,27 +24,26 @@
         测试</a
       >
       &nbsp;
-      <a href="#Activity"><i class="fa fa-file-text"></i> 大段文本</a>
+      <a href="#Text"><i class="fa fa-file-text"></i> 大段文本</a>
+      <br />
+      <a href="#css_class">
+        <i class="fa fa-pencil"></i>
+        CSS 课堂练习</a
+      >
+      &nbsp;
+
       <div class="links">
         外部链接:
         <a href="form.html"><i class="fa fa-send"></i> 表单</a>
       </div>
+      <button>
+        <a href="#Top"><i class="fa fa-arrow-up"></i> 回到顶部</a>
+      </button>
+      <button onclick="guide()"><i class="fa fa-arrow-right"></i> 收起目录</button>
     </div>
     <div id="Test">
-      <h2>测试</h2>
-      <p>文字测试</p>
-      <h1>h1标题</h1>
-      <h2>h2标题</h2>
-      <h3>h3标题</h3>
-      <h4>h4标题</h4>
-      <h5>h5标题</h5>
-      <h6>h6标题</h6>
-      <p>段落<br />换行</p>
-      <div>div</div>
-      <span> span</span>
-      <hr />
-
-      <p>图片测试</p>
+      <h2><i class="fa fa-coffee"></i> 测试</h2>
+      <h3>图片测试</h3>
       <table>
         <tr>
           <th>
@@ -70,7 +71,7 @@
       </table>
 
       <div>
-        <p>表格测试</p>
+        <h3>表格测试</h3>
         <table>
           <thead>
             <tr>
@@ -104,24 +105,15 @@
       </div>
     </div>
     <hr />
-    <div id="Activity">
-      <h2>大段文本</h2>
-      <table>
-        <i class="fa fa-server"></i
-        >&nbsp; 目录：
-        <tr>
-          <th>
-            <i class="fa fa-hand-spock-o"></i>
-            <a href="#Intro">学校介绍</a>
-          </th>
-          <th>
-            <i class="fa fa-book"></i>
-            <a href="#History">历史沿革</a>
-          </th>
-        </tr>
-      </table>
-      <a href="http://www.neau.edu.cn/xygk/xxjs.htm" target="_blank">http://www.neau.edu.cn/xygk/xxjs.htm</a>
+    <div id="Text">
+      <h2><i class="fa fa-file-text"></i> 大段文本</h2>
+      <div class="textguide">
+        <i class="fa fa-search"></i>&nbsp; 子目录：<br />
+        <a href="#Intro"> <i class="fa fa-hand-spock-o"></i>学校介绍</a>
+        &nbsp;<a href="#History"><i class="fa fa-book"></i>历史沿革</a><br />
+      </div>
       <h3 id="Intro">学校介绍</h3>
+      <a href="http://www.neau.edu.cn/xygk/xxjs.htm" target="_blank">http://www.neau.edu.cn/xygk/xxjs.htm</a>
 
       <p>
         <span
@@ -158,9 +150,10 @@
         新时代的东北农业大学，将紧紧抓住国家“双一流”建设的有利时机，继承“艰苦奋斗，自强不息”的精神，弘扬“勤奋、求实、奉献、创新”的校风，围绕国家所需、龙江所要、学校所能和未来所向，满怀信心地向着“国际知名、国内同类院校一流、具有我国北方现代农业特色的多科性、研究教学型和开放式”的高水平农业大学奋进！
       </p>
       <p class="vsbcontent_end">（数据统计时间截至2022年3月）</p>
-      <a href="http://www.neau.edu.cn/xygk/lsyg.htm" target="_blank">http://www.neau.edu.cn/xygk/lsyg.htm</a>
 
       <h3 id="History">历史沿革</h3>
+      <a href="http://www.neau.edu.cn/xygk/lsyg.htm" target="_blank">http://www.neau.edu.cn/xygk/lsyg.htm</a>
+
       <ul>
         <li>
           <p>1948年 8月，东北农学院筹委会成立，刘达任主任；</p>
@@ -194,5 +187,74 @@
         </li>
       </ul>
     </div>
+    <hr />
+    <div id="css_class">
+      <h2><i class="fa fa-pencil"></i> CSS 课堂练习</h2>
+      <h3>&lt;div&gt; block 盒子</h3>
+      <div class="d1">
+        <div class="d2"></div>
+      </div>
+      <h3>display: flex;</h3>
+      <div class="flex idiv">
+        <img src="/imgs/nice.gif" height="100px" />
+        <p>
+          2008年4月10日，GitHub正式上线。 2014年1月23日，联合创始人汤姆·普雷斯顿-维尔纳（Tom Preston-Werner）从另一位联合创始人克里斯·万斯特拉斯（Chris
+          Wanstrath）手中接过总裁职位，后者也将接过普雷斯顿-维尔纳留下的CEO位置。 2018年6月4日晚，微软宣布，通过75亿美元的股票交易收购GitHub。
+          10月26日，微软以75亿美元收购GitHub交易已完成。10月29日，微软开发者服务副总裁奈特·弗里德曼（Nat Friedman）将成为GitHub的新一任CEO。
+          2020年3月17日，Github宣布收购npm，GitHub现在已经保证npm将永远免费使用。 2021年11月4日消息，微软宣布GitHub
+          CEO奈特·弗里德曼将于11月15日卸任，其职位由GitHub产品主管托马斯·多梅克接替。
+        </p>
+      </div>
+      <h3>overflow</h3>
+      <div class="overflow odiv">
+        <h4>overflow: hidden;</h4>
+        <div class="overflowhidden idiv">
+          <img src="/imgs/nice.gif" height="100px" />
+          <p>
+            2008年4月10日，GitHub正式上线。 2014年1月23日，联合创始人汤姆·普雷斯顿-维尔纳（Tom Preston-Werner）从另一位联合创始人克里斯·万斯特拉斯（Chris
+            Wanstrath）手中接过总裁职位，后者也将接过普雷斯顿-维尔纳留下的CEO位置。 2018年6月4日晚，微软宣布，通过75亿美元的股票交易收购GitHub。
+            10月26日，微软以75亿美元收购GitHub交易已完成。10月29日，微软开发者服务副总裁奈特·弗里德曼（Nat Friedman）将成为GitHub的新一任CEO。
+            2020年3月17日，Github宣布收购npm，GitHub现在已经保证npm将永远免费使用。 2021年11月4日消息，微软宣布GitHub
+            CEO奈特·弗里德曼将于11月15日卸任，其职位由GitHub产品主管托马斯·多梅克接替。
+          </p>
+        </div>
+        <h4>overflow: scroll;</h4>
+        <div class="overflowscroll idiv">
+          <img src="/imgs/nice.gif" height="100px" />
+          <p>
+            2008年4月10日，GitHub正式上线。 2014年1月23日，联合创始人汤姆·普雷斯顿-维尔纳（Tom Preston-Werner）从另一位联合创始人克里斯·万斯特拉斯（Chris
+            Wanstrath）手中接过总裁职位，后者也将接过普雷斯顿-维尔纳留下的CEO位置。 2018年6月4日晚，微软宣布，通过75亿美元的股票交易收购GitHub。
+            10月26日，微软以75亿美元收购GitHub交易已完成。10月29日，微软开发者服务副总裁奈特·弗里德曼（Nat Friedman）将成为GitHub的新一任CEO。
+            2020年3月17日，Github宣布收购npm，GitHub现在已经保证npm将永远免费使用。 2021年11月4日消息，微软宣布GitHub
+            CEO奈特·弗里德曼将于11月15日卸任，其职位由GitHub产品主管托马斯·多梅克接替。
+          </p>
+        </div>
+        <h4>overflow: visible;</h4>
+        <div class="overflowvisible idiv">
+          <img src="/imgs/nice.gif" height="100px" />
+          <p>
+            2008年4月10日，GitHub正式上线。 2014年1月23日，联合创始人汤姆·普雷斯顿-维尔纳（Tom Preston-Werner）从另一位联合创始人克里斯·万斯特拉斯（Chris
+            Wanstrath）手中接过总裁职位，后者也将接过普雷斯顿-维尔纳留下的CEO位置。 2018年6月4日晚，微软宣布，通过75亿美元的股票交易收购GitHub。
+            10月26日，微软以75亿美元收购GitHub交易已完成。10月29日，微软开发者服务副总裁奈特·弗里德曼（Nat Friedman）将成为GitHub的新一任CEO。
+            2020年3月17日，Github宣布收购npm，GitHub现在已经保证npm将永远免费使用。 2021年11月4日消息，微软宣布GitHub
+            CEO奈特·弗里德曼将于11月15日卸任，其职位由GitHub产品主管托马斯·多梅克接替。
+          </p>
+        </div>
+      </div>
+
+      <br /><br />
+      <h3>Position</h3>
+    </div>
   </body>
+  <script type="text/javascript">
+    function guide() {
+      if (document.getElementById("guide").style.display == "none") {
+        document.getElementById("guide").style.display = "block";
+        document.getElementById("guideopener").style.display = "none";
+      } else {
+        document.getElementById("guide").style.display = "none";
+        document.getElementById("guideopener").style.display = "block";
+      }
+    }
+  </script>
 </html>
