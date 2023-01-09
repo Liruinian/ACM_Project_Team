@@ -1,5 +1,5 @@
 html {
-  background: url("/imgs/bg.jpg") no-repeat;
+  background: url("./imgs/bg.jpg") no-repeat;
   background-position: center center;
   background-size: auto 100%;
   background-attachment: fixed;
