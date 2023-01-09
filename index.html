@@ -7,23 +7,49 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
     <title>html基础</title>
   </head>
+  <style>
+    img.background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+      filter: blur(5px);
+    }
+
+    .title {
+      display: flex;
+      margin: 20px;
+    }
+
+    div {
+      margin: 20px;
+    }
+
+    a {
+      color: black;
+    }
+  </style>
   <body>
     <div>
-      <table>
-        <i class="fa fa-server"></i
-        >&nbsp; 目录：
-        <tr>
-          <th>
-            <i class="fa fa-coffee"></i>
-            <a href="./Basic_HTML/html/index.html">html基础</a>
-          </th>
-          <th>
-            <i class="fa fa-coffee"></i>
-            <a href="./Basic_HTML/HTML_Basic_Homework/html/index.html">html基础-作业</a>
-          </th>
-        </tr>
-      </table>
-      <hr />
+      <div class="title">
+        <img src="https://home.neauacm.cn/images/neauacm.png" height="100px" width="100px" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <h1>ACM_Project_Team</h1>
+      </div>
+
+      <img class="background" src="https://home.neauacm.cn/images/bg_2.jpg" alt="acm" />
+      <h2><i class="fa fa-server"></i>&nbsp; 练习目录：<br /></h2>
+      <a href="./Basic_HTML/html/index.html"><i class="fa fa-coffee"></i>html基础</a>
+      <a href="./Basic_HTML/HTML_Basic_Homework/html/index.html"><i class="fa fa-coffee"></i>html基础-作业</a>
+      <br />
+      <a href="./CSS_Basic/index.html"><i class="fa fa-coffee"></i>CSS基础</a>
+    </div>
+    <div class="links">
+      <h2><i class="fa fa-link"></i> &nbsp;有用的链接：<br /></h2>
+      <a href="https://docs.qq.com/doc/DS2tyWWdmV0xYRWtL " target="_blank">【腾讯文档】2023项目部寒假培训录屏汇总 </a><br />
+      <a href="https://docs.qq.com/doc/DS1hoZll4blFlSXVn" target="_blank">【腾讯文档】2023项目部寒假培训文档汇总 </a>
     </div>
   </body>
 </html>
