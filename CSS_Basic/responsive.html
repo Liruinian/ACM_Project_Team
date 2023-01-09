@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html 1ang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initia]-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <title>css响应式</title>
+    <style>
+      .container {
+        width: 700px;
+        height: 500px;
+        display: flex;
+        background-color: green;
+      }
+
+      @media screen and (max-width: 500px) {
+        .container {
+          background-color: red;
+        }
+      }
+
+      @media screen and (min-width: 700px) {
+        .container {
+          background-color: blue;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h2>
+      <i class="fa fa-automobile"></i>&nbsp;css响应式&nbsp;<a href="index.html"><i class="fa fa-arrow-circle-up"></i></a>
+    </h2>
+    用电脑打开后调节窗口大小试试！
+    <div class="container"></div>
+  </body>
+</html>

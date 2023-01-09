@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html 1ang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initia]-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <title>css内容自适应</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      .warp {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .header {
+        background-color: chocolate;
+        height: 40px;
+        color: white;
+      }
+      .content {
+        flex: 1;
+        overflow-y: auto;
+        background-color: hotpink;
+      }
+      .footer {
+        background-color: aqua;
+        height: 40px;
+      }
+      .header,
+      .content,
+      .footer {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="warp">
+      <div class="header">
+        <h2>
+          <i class="fa fa-address-card"></i>&nbsp;css内容自适应&nbsp;<a href="index.html"><i class="fa fa-arrow-circle-up"></i></a><br />
+        </h2>
+        header
+      </div>
+      <div class="content">content</div>
+      <div class="footer">footer</div>
+    </div>
+  </body>
+</html>
