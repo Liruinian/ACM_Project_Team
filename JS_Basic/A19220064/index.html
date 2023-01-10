@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html 1ang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>js基础</title>
+  </head>
+  <body>
+    <style type="text/css">
+      * {
+        color: grey;
+        font-size: 9px;
+      }
+      li,
+      button,
+      p {
+        color: black;
+        font-size: 18px;
+      }
+      p {
+        padding: 0;
+        font-weight: bold;
+      }
+      h1 {
+        color: black;
+        font-size: 30px;
+      }
+    </style>
+    <h1>电气2204李睿年 js基础 (1)</h1>
+    <hr />
+    <div class="container">
+      <ol>
+        <p>单选题：</p>
+        <li>B</li>
+        <li>AC</li>
+        &nbsp;^ 两个选项都对? A: 32为int，C: 1814为String
+
+        <li>B</li>
+        <p>判断题：</p>
+        <li>√</li>
+        <li>√</li>
+        <li>√</li>
+        <li>×</li>
+        &nbsp;^ 弱类型但是不是静态语言
+        <li>×</li>
+        &nbsp;^ 八进制前加0O或0o，十六进制正确
+        <li>×</li>
+        &nbsp;^ 结果是0.8999999999999999
+        <li>√</li>
+        <p>大题：</p>
+        <li><button id="t11" type="button" onclick="t11()">点击运行</button></li>
+        <li><button id="t12" type="button" onclick="t12()">点击运行</button></li>
+      </ol>
+    </div>
+    <script type="text/javascript">
+      function t11() {
+        document.getElementById("t11").innerHTML = "请打开F12控制台查看";
+        let s = "";
+        for (var i = 0; i < 5; i++) {
+          for (var j = i; j >= 0; j--) {
+            s += "⭐";
+          }
+          s += "\n";
+        }
+        console.log(s);
+      }
+
+      function t12() {
+        let a = prompt("请输入第一个值：");
+        let b = prompt("请输入第二个值：");
+        // a = parseInt(a);
+        // b = parseInt(b);
+        // 因JavaScript特性，解析字符串为整数不是必要的
+        alert("结果为：" + (a - b));
+      }
+    </script>
+  </body>
+</html>
