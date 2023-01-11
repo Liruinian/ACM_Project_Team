@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>js基础</title>
+  </head>
+  <body>
+    <div id="Top">
+      <h1>电气2204李睿年 js基础</h1>
+    </div>
+    <hr />
+    <button id="prompt" type="button" onclick="prompt_()">hello</button>
+    <button id="prompt" type="button" onclick="calculate()">calculate</button>
+
+    <button id="prompt" type="button" onclick="object()">object</button>
+
+    <button id="prompt" type="button" onclick="dom_b()">dom</button>
+
+    <script>
+      function myFunction() {
+        document.getElementById("demo").innerHTML = "我显示了";
+        document.getElementById("bn1").nnerHTML = "隐藏";
+        bn1.onclick = bnOnclick;
+      }
+      function bnOnclick() {
+        document.getElementById("demo").innerHTML = "";
+        document.getElementById("bn1").innerHTML = "显示";
+        bn1.onclick = myFunction;
+      }
+    </script>
+    <div class="dd">
+      <button onclick="myFunction()" id="bn1">显示</button>
+      <p id="demo"></p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script>
+      let s, i;
+      // 基础数据
+      let sch1 = "电气与信息学院";
+      let sch2 = "文理学院";
+      let sub1 = { cs: "计算机科学与技术", se: "软件工程专业" };
+      let sub2 = { en: "英语专业" };
+      let cs = {
+        "2006级": "300人",
+        "2007级": "200人",
+        "2008级": "150人",
+        "2009级": "120人",
+      };
+      let se = {
+        "2006级": "100人",
+        "2007级": "80人",
+        "2008级": "50人",
+        "2009级": "40人",
+      };
+      let en = {
+        "2006级": "100人",
+        "2007级": "80人",
+        "2008级": "50人",
+        "2009级": "20人",
+      };
+      let data_sch1 = { cs, se };
+      let data_sch2 = { en };
+
+      function Output_sheet(school, subject, data_sch) {
+        // Copyright 电气2204李睿年 2023.1.11
+        // 修改自css作业
+
+        let tb = document.getElementsByTagName("tbody")[0];
+        //找到tbody位置
+        let tr = document.createElement("tr");
+        let schnode = document.createElement("td");
+        let subnode = document.createElement("td");
+        schnode.className = "school";
+        schnode.rowSpan = 3;
+        subnode.className = "subject";
+        subnode.colSpan = 4;
+        // 创建school subject两个node 并修改表格合并项个数
+        for (s in subject) {
+          // 将school和subject插入表格
+          schnode.innerText = school;
+          tb.appendChild(schnode);
+          subnode.innerText = subject[s];
+          tb.appendChild(subnode);
+          // 偷懒了直接用innerHTML了
+          // 创建node然后appendChild太麻烦了qwq(逃
+          let grade = "<tr>";
+          for (i in data_sch[s]) {
+            grade += "<td class='grade'>" + i + "</td>";
+          }
+          grade += "</tr><tr>";
+          for (i in data_sch[s]) {
+            grade += "<td>" + data_sch[s][i] + "</td>";
+          }
+          tb.innerHTML += grade;
+        }
+      }
+
+      function display_fn() {
+        Output_sheet(sch1, sub1, data_sch1);
+        // 电信
+        Output_sheet(sch2, sub2, data_sch2);
+        // 文理
+      }
+      function display_btn() {
+        display_fn();
+      }
+    </script>
+    <style>
+      h1,
+      p {
+        color: white;
+      }
+      html {
+        background-color: rgb(73, 141, 254);
+        text-align: center;
+      }
+
+      th {
+        background-color: aqua;
+      }
+
+      table tr th {
+        font-weight: 500;
+        border-color: rgb(73, 141, 254);
+      }
+
+      .school {
+        background-color: rgb(88, 222, 0);
+      }
+
+      .subject {
+        background-color: white;
+      }
+
+      .grade {
+        background-color: rgb(244, 169, 23);
+      }
+    </style>
+    <title>js基础 (2)</title>
+  </head>
+  <body>
+    <h1>电气2204李睿年 js基础 (2)</h1>
+    <hr />
+    <p>表格是通过数据变量生成的，方便接入数据库</p>
+    <button type="button" id="display_sheet" onclick="display_btn()">display_sheet</button>
+
+    <table border="10px">
+      <thead>
+        <tr>
+          <th>学院名</th>
+          <th colspan="4">专业及人数</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </body>
+</html>

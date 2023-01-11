@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>js基础 (2)</title>
+  </head>
+  <body>
+    <style type="text/css">
+      * {
+        color: grey;
+        font-size: 9px;
+      }
+      li,
+      button,
+      p,
+      input {
+        color: black;
+        font-size: 20px;
+      }
+      p {
+        padding: 0;
+        font-weight: bold;
+      }
+      h1 {
+        color: black;
+        font-size: 30px;
+      }
+    </style>
+    <h1>电气2204李睿年 js基础 (2)</h1>
+    <hr />
+    <div class="container">
+      <p>一个简单的数字叠加器</p>
+      <input type="text" id="num_input" value="1" />
+      <button type="button" id="add_one" onclick="add_one()">+</button>
+    </div>
+    <script type="text/javascript">
+      function add_one() {
+        let num_i = document.getElementById("num_input");
+        let num = parseInt(num_i.value);
+        num_i.value = num + 1;
+      }
+    </script>
+  </body>
+</html>
