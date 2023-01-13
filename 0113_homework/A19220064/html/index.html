@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- 显示图标用css Font Awesome 4.7.0 by @davegandy -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <style>
+      /* 原css/style.css  因不符合要求而合并到html内 */
+      html {
+        background-size: cover;
+        background: url("../imgs/bg.jpg") no-repeat;
+        background-position: center center;
+        background-color: lightpink;
+        text-align: center;
+        height: 100vh;
+        overflow: auto;
+        width: 100%;
+      }
+
+      a {
+        color: white;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+
+      div {
+        margin: 5px;
+        padding: 2px 0;
+      }
+
+      .error::-webkit-input-placeholder {
+        color: red;
+      }
+      .error::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: red;
+      }
+      .error:-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: red;
+      }
+      .error:-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: red;
+      }
+
+      .main {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .container {
+        width: 750px;
+        display: flex;
+        padding: 20px;
+        margin: 0 auto;
+        overflow: hidden;
+        background-color: white;
+        border-radius: 5px;
+      }
+
+      .b_text {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .text {
+        font-size: 14px;
+        color: #444444;
+      }
+      .notetext {
+        font-size: 12px;
+        color: #999999;
+      }
+
+      .left,
+      .right {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .left {
+        border-right: 1px solid #ebebeb;
+      }
+      .right {
+        padding-left: 20px;
+      }
+      .m_password_login,
+      .m_textmsg_login {
+        padding-bottom: 5px;
+      }
+      .m_password_login {
+        font-weight: bold;
+      }
+      .qrcode {
+        width: 150px;
+        padding: 10px;
+        border: 1px solid #ebebeb;
+        border-radius: 5px;
+      }
+      .scan_method {
+        margin-bottom: 60px;
+        font-size: 14px;
+      }
+      .login {
+        width: 320px;
+        height: 30px;
+        margin: 20px 0;
+        background-color: rgb(200, 116, 204);
+        color: white;
+        padding-top: 7px;
+        border-radius: 5px;
+      }
+      .login:hover {
+        background-color: rgb(149, 77, 153);
+        cursor: pointer;
+      }
+      .divider {
+        display: flex;
+        align-items: center;
+      }
+      .login_method {
+        display: flex;
+        width: 320px;
+        align-items: left;
+      }
+      .input {
+        width: 320px;
+        height: 40px;
+        border: none;
+        border-bottom: 1px solid #ebebeb;
+        margin-bottom: 10px;
+      }
+      .m_password_login {
+        border-bottom: 4px solid rgb(209, 175, 211);
+      }
+      .login_method {
+        align-items: left;
+      }
+      .line {
+        flex: 1;
+        width: 124px;
+        border-top: 1px solid #ebebeb;
+      }
+
+      .oversea {
+        font-size: 14px;
+        color: rgb(206, 111, 211);
+      }
+
+      .oversea,
+      .forgot {
+        flex: 1;
+      }
+      .forgot {
+        text-align: right;
+      }
+      .pass_tray {
+        display: flex;
+        text-align: justify;
+        margin: 0;
+      }
+
+      .round_btn {
+        border: 1px solid #ebebeb;
+        padding: 3px;
+        border-radius: 5px;
+        margin: 0 5px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .circle {
+        border-radius: 50%;
+        padding: 10px;
+        margin: 10px;
+        width: 20px;
+        height: 20px;
+        background-color: rgb(246, 246, 246);
+      }
+
+      .method_container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 200px;
+        margin-left: 70px;
+      }
+      .footer {
+        color: white;
+        text-shadow: 0 1px 2px #999;
+        font-size: 12px;
+      }
+      .wechat {
+        color: rgb(75, 191, 94);
+      }
+      .qq {
+        color: rgb(112, 198, 252);
+      }
+      .weibo {
+        color: rgb(236, 110, 45);
+      }
+    </style>
+    <script src="../js/main.js" type="text/javascript"></script>
+    <title>PRTS_Analyze_OS</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <img src="../imgs/prts.png" height="150px" />
+      </div>
+      <div class="container">
+        <div id="left" class="left">
+          <div class="b_text">打开 PRTS App</div>
+          <div class="text">在「我的」左上角打开扫一扫</div>
+          <div class="qrcode">
+            <img src="../imgs/qrcode.png" width="150px" />
+          </div>
+          <div class="scan_method b_text">其他扫码方式：巨信</div>
+          <div class="left_func">
+            <span class="round_btn" onclick="download_app()">下载 PRTS app</span>
+            <span class="round_btn" onclick="org_signup()">开通机构号</span>
+            <span class="round_btn" onclick="">无障碍模式</span>
+          </div>
+        </div>
+        <div id="right" class="right">
+          <div class="login_method">
+            <div class="m_textmsg_login">验证码登录</div>
+            <div class="m_password_login">密码登录</div>
+          </div>
+          <div class="d_password_login">
+            <input type="text" id="account" class="input" onchange="check()" placeholder="手机号或邮箱" /><br />
+            <input type="password" id="password" class="input" onchange="check()" placeholder="密码" />
+            <div class="pass_tray">
+              <span class="oversea" id="oversea">泰拉证件号登录</span>
+              <span class="forgot text" id="forget_pass">忘记密码</span>
+            </div>
+            <div class="login" id="login" onclick="login()">登录</div>
+          </div>
+          <div class="d_other_methods">
+            <div class="divider">
+              <div class="line"></div>
+              <div class="notetext">其他方式登录</div>
+              <div class="line"></div>
+            </div>
+
+            <div class="method_container">
+              <a href="#wechat">
+                <div class="circle wechat" id="wechat_login">
+                  <i class="fa fa-wechat"></i>
+                </div> </a
+              ><a href="#qq">
+                <div class="circle qq" id="qq_login">
+                  <i class="fa fa-qq"></i>
+                </div> </a
+              ><a href="#weibo">
+                <div class="circle weibo" id="weibo_login">
+                  <i class="fa fa-weibo"></i>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="notetext">未注册手机验证后自动登录，注册即代表同意《PRTS协议》《隐私保护指引》</div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <footer>
+    <div class="footer">
+      <a href="http://www.neau.edu.cn" target="_blank">东北农业大学</a> · <a href="https://home.neauacm.cn/" target="_blank">东北农业大学ACM集训队</a> ·
+      <a href="https://oj.neauacm.cn/" target="_blank">NEAUOJ</a>
+      <p>本次作业使用素材版权归属于上海鹰角网络科技有限公司，仅用于学习使用且不以盈利为目的！</p>
+      <p>东北农业大学 电气2204 李睿年 2023.1.13 <a href="https://liruinian.top" target="_blank">个人网站</a></p>
+    </div>
+  </footer>
+</html>
