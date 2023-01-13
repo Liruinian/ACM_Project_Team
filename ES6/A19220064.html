@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>真值表计算器</title>
+    <style>
+      table,
+      td,
+      th {
+        border-width: 0.1em;
+        border-color: black;
+        border-style: solid;
+      }
+
+      table {
+        margin-top: 1em;
+      }
+
+      .highlight {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>电气2204李睿年 ES6</h1>
+      <hr />
+      <p>表达式可以是任何合法的JS表达式，变量用一个字母表示（区分大小写），字母种类数不超过30个</p>
+      <input type="text" id="expr" placeholder="例如：a^b" />
+      <button onclick="printTable()">计算</button>
+      <button onclick="highlight()">高亮结果为1的行</button>
+      <div id="truth-table"></div>
+    </main>
+    <script>
+      function calc(expr) {
+        // 提取输入的表达式中的字母，去重后按字典序排序
+        const vars = [...new Set(expr.replace(/\W/g, ""))].sort();
+        const n = vars.length,
+          m = 1 << n;
+        // 绘制表头
+        let s = `<tr><th>${vars.join("</th><th>")}</th><th>${expr}</th></tr>`;
+        // 目标函数
+        const f = Function(...vars, `return ${expr}`);
+        for (let i = 0; i < m; i++) {
+          // 参数列表
+          const args = [];
+          s += "<tr>";
+          for (let j = n; j--; ) {
+            const x = (i >> j) & 1;
+            s += `<td>${x}</td>`;
+            args[j] = x;
+          }
+          s += `<td>${f(...args)}</td></tr>`;
+        }
+        return `<table>${s}</table>`;
+      }
+
+      const input = document.getElementById("expr");
+      const target = document.getElementById("truth-table");
+      function printTable() {
+        target.innerHTML = calc(input.value);
+      }
+
+      function highlight() {
+        if (target.innerHTML != "") {
+          let tbody = target.childNodes.item(0).childNodes.item(0);
+          let tr_data = tbody.childNodes;
+          let tr_length = tr_data[0].childNodes.length;
+          for (let i = 0; i < tr_data.length; i++) {
+            let result_node = tr_data[i].childNodes[tr_length - 1];
+            // 取计算结果：即表格的最后一项 数组从0计数所以length-1
+            if (result_node.textContent == "1") {
+              let tr_hl = result_node.parentElement;
+              if (tr_hl.hasAttribute("class")) {
+                tr_hl.removeAttribute("class");
+              } else {
+                tr_hl.className = "highlight";
+              }
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

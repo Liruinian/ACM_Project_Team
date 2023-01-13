@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>js基础</title>
+  </head>
+  <body>
+    <div id="Top">
+      <h1>电气2204李睿年 ES6</h1>
+      <a href="A19220064.html">真值表计算器</a><br />
+      <input type="text" id="expr" value="a ^ b" />
+      <button onclick="printTable()">计算</button>
+      <div id="truth-table"></div>
+    </div>
+    <hr />
+    <script>
+      function calc(expr) {
+        const vars = [...new Set(expr.replace(/\W/g, ""))].sort();
+        const n = vars.length;
+        m = 1 << n;
+        let s = `<tr><th>${vars.join("</th><th>")}</th><th>${expr}</th></tr>`;
+        const f = Function(...vars, `return ${expr}`);
+        for (let i = 0; i < m; i++) {
+          const args = [];
+          s += `<tr>`;
+          for (let j = n; j--; ) {
+            const x = (i >> j) & 1;
+            s += `<td>${x}</td>`;
+            args[j] = x;
+          }
+          s += `<td>${f(...args)}</td></tr>`;
+        }
+        return `<table>${s}</table>`;
+      }
+
+      function printTable() {
+        document.getElementById("truth-table").innerHTML = calc(document.getElementById("expr").value);
+      }
+    </script>
+  </body>
+</html>
