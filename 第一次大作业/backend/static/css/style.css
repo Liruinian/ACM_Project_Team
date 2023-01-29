@@ -1,0 +1,336 @@
+@font-face {
+  font-family: "BenderLight";
+  src: url(../fonts/BenderLight.ttf);
+}
+html {
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  background: url("../imgs/bg.jpg") no-repeat;
+  background-position: center center;
+  background-color: black;
+  text-align: center;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.fade_right {
+  animation: fade_right 1s;
+  opacity: 0;
+}
+
+.fade_left {
+  animation: fade_left 1s;
+}
+
+.fade_left_back {
+  animation: fade_left_back 1s;
+}
+.fadeOut {
+  animation: fadeOut 1s;
+  opacity: 1;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade_left {
+  0% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fade_right {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes fade_left_back {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+div {
+  margin: 5px;
+  padding: 2px 0;
+  color: white;
+}
+
+input::placeholder {
+  color: #a5a5a5;
+}
+
+.error::-webkit-input-placeholder {
+  color: red;
+}
+.error::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: red;
+}
+.error:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: red;
+}
+.error:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: red;
+}
+.loading {
+  display: none;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.header {
+  position: absolute;
+  top: 0;
+  z-index: 999;
+}
+.placeholder {
+  height: 150px;
+}
+.main {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login_cont,
+.signup_cont {
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: rgba(23, 73, 94, 0.2);
+  backdrop-filter: blur(10px);
+}
+.arrow_back {
+  width: 50px;
+}
+.b_text {
+  font-size: 18px;
+  font-weight: bold;
+}
+.text {
+  font-size: 14px;
+  color: #ebebeb;
+}
+.notetext {
+  font-size: 12px;
+  color: #b6b6b6;
+}
+
+.right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.m_password_login {
+  margin: 0;
+  padding: 5px 20px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 25px;
+  width: 100%;
+}
+
+.login,
+.signup {
+  width: 320px;
+  height: 30px;
+  margin: 20px 0;
+  background-color: rgb(34, 187, 255);
+  color: white;
+  padding-top: 7px;
+}
+.login:hover,
+.signup:hover {
+  background-color: rgb(0, 162, 232);
+  cursor: pointer;
+}
+.divider {
+  display: flex;
+  align-items: center;
+}
+.wel_title {
+  font-size: 25px;
+}
+.wel_eng {
+  position: absolute;
+  text-align: right;
+  bottom: 20px;
+  right: 20px;
+  font-size: 70px;
+  color: rgba(255, 255, 255, 0.05);
+  padding-top: -20px;
+  pointer-events: none;
+}
+.login_method {
+  display: flex;
+  width: 320px;
+}
+.signup_welcome {
+  width: 320px;
+  text-align: left;
+}
+
+.input {
+  color: #a5a5a5;
+  width: 320px;
+  height: 35px;
+  font-size: 1em;
+  border: none;
+  background: none;
+  border-radius: 0;
+  border-bottom: 2px solid rgba(102, 102, 102, 0.22);
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-family: "BenderLight";
+}
+input:focus {
+  outline: none;
+}
+.underlined {
+  border-bottom: 4px solid rgb(255, 238, 34);
+  margin-bottom: 20px;
+}
+.login_method,
+.signup_method {
+  align-items: left;
+}
+.line {
+  flex: 1;
+  width: 124px;
+  border-top: 1px solid #ebebeb;
+}
+
+.signup_url {
+  font-size: 14px;
+  color: rgb(26, 161, 219);
+}
+
+.signup,
+.forgot {
+  flex: 1;
+}
+.forgot {
+  text-align: right;
+}
+.pass_tray {
+  display: flex;
+  text-align: justify;
+  margin: 0;
+}
+
+.circle {
+  padding: 10px;
+  margin: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.method_login_cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+  margin-left: 70px;
+}
+
+.wechat {
+  color: #4abf5d;
+}
+.qq {
+  color: #70c6fc;
+}
+.weibo {
+  color: #ec6e2d;
+}
+.footer {
+  width: 200px;
+  color: white;
+  text-shadow: 0 1px 2px #999;
+  font-size: 12px;
+}
