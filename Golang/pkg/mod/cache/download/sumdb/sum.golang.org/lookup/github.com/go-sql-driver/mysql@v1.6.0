@@ -1,3 +1,7 @@
+3554499
+github.com/go-sql-driver/mysql v1.6.0 h1:BCTh4TKNUYmOmMUcQ3IipzF5prigylS7XXjEkfCHuOE=
+github.com/go-sql-driver/mysql v1.6.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
+
 go.sum database tree
 15454382
 03/gViajr61O9Nxo+vc9J5nZ4HhtDsHW2exfm900kz0=
