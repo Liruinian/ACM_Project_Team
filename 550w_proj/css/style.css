@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "BenderLight";
+  src: url(../fonts/BenderLight.ttf);
+}
+html {
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  background-position: center center;
+  background-color: black;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+#content {
+  color: white;
+}
+
+#content::after {
+  content: "|";
+  color: darkgray;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
