@@ -1,12 +1,20 @@
 from flask import Flask, redirect, url_for, request, render_template, make_response
 import sqlite3
+from flask_cors import CORS, cross_origin
+
 
 app = Flask(__name__)
+CORS(app, resources=r'/*')
 
 
 @app.route('/')
 def index():
     return render_template("index.html")
+
+
+@app.route('/get-articles')
+def getart():
+    return render_template("1.html")
 
 
 @app.route('/login', methods=['POST'])

@@ -1,18 +1,25 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func main() {
-	database, err := sqlx.Open("mysql", "root:localhost@tcp(127.0.0.1:3306)/mytest")
-	if err != nil {
-		fmt.Println("open mysql failed,", err)
+func mysqlConn() {
+	DB, _ := sql.Open("mysql", "root:@a20040207@tcp(127.0.0.1:3306)/articles")
+	DB.SetConnMaxLifetime(100)
+	DB.SetMaxIdleConns(10)
+	if err := DB.Ping(); err != nil {
+		fmt.Println("open database fail")
 		return
 	}
-	fmt.Println(database)
+	fmt.Println("connect success")
+}
+func main() {
+	mysqlConn()
+	
 	ginServer := gin.Default()
 	ginServer.POST("/login", func(context *gin.Context) {
 		context.JSON(200, nil)

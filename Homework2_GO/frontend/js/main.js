@@ -34,35 +34,15 @@ function login() {
   }
 
   if ((p_test.test(account) || em_test.test(account)) && password.length >= 6) {
-    let login_type = 0;
-    if (p_test.test(account)) {
-      login_type = 1;
-    } else {
-      login_type = 2;
-    }
-
-    // document.getElementById("submit").click();
-
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://127.0.0.1:5000/login", true);
-    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    httpRequest.send("username=" + account + "&password=" + password + "&login_type=" + login_type + "");
-    httpRequest.onreadystatechange = function () {
-      if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-        var return_data = httpRequest.responseText;
-        if (return_data == "success") {
-          login_cont.classList.remove("fade_left");
-          login_cont.classList.add("fade_right");
-          loader.style.display = "none";
-          login_cont.addEventListener("animationend", function () {
-            window.location.href = "./article.html";
-          });
-        } else {
-          alert(return_data);
-          loader.style.display = "none";
-        }
-      }
-    };
+    // TODO: post 发送到server
+    // return true;
+    alert("登录信息：\n账号：" + account + "\n密码：" + password);
+    login_cont.classList.remove("fade_left");
+    login_cont.classList.add("fade_right");
+    loader.style.display = "none";
+    login_cont.addEventListener("animationend", function () {
+      window.location.href = "./article.html?username=" + account;
+    });
 
     return true;
   } else {
