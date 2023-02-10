@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/article.css" />
     <script src="./js/article.js" type="text/javascript"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/marked/2.0.3/marked.js"></script>
+    <script src="./js/Device.min.js"></script>
     <title>PRTS_Analyze_OS</title>
   </head>
   <body>
@@ -30,11 +31,18 @@
           <p>电气2204 李睿年 2023.1.19</p>
         </div>
       </div>
-      <div class="logo">
+      <div class="logo" id="logo">
         <img src="./imgs/prts_reversed.png" height="150px" />
       </div>
       <div id="page_container" class="page_container"></div>
       <div class="loading" id="loading">Loading...</div>
     </div>
+    <script>
+      if (Device.isMobile) {
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("logo").style.display = "none";
+        document.getElementById("page_container").style.margin = "0";
+      }
+    </script>
   </body>
 </html>
