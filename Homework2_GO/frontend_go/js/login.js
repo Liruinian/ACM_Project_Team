@@ -44,7 +44,7 @@ function login() {
     // document.getElementById("submit").click();
 
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "https://api.liruinian.top/login", true);
+    httpRequest.open("POST", "https://api.liruinian.top:8880/login", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("username=" + account + "&password=" + password + "&login_type=" + login_type + "");
     httpRequest.onreadystatechange = function () {
