@@ -3,7 +3,6 @@
   src: url(../fonts/BenderLight.ttf);
 }
 html {
-  height: auto;
   margin: 0;
   padding: 0;
   color: white;
@@ -14,11 +13,19 @@ html {
   text-align: center;
   height: 100vh;
   overflow: hidden;
-  width: 100%;
+
   font-family: "BenderLight", "sans-serif";
 }
 .page_container {
   scroll-behavior: smooth;
+}
+.page_container div {
+  margin: 5px;
+  padding: 2px 0;
+}
+
+.page_container img {
+  width: 100%;
 }
 ::-webkit-scrollbar {
   width: 0px;
@@ -41,26 +48,7 @@ html {
     left: 0;
   }
 }
-@keyframes change_open {
-  from {
-    transform: translate3d(100%, 0, 0);
-    opacity: 0;
-  }
-  to {
-    right: 0;
-    opacity: 1;
-  }
-}
-@keyframes change_close {
-  from {
-    right: 0;
-    opacity: 1;
-  }
-  to {
-    transform: translate3d(100%, 0, 0);
-    opacity: 0;
-  }
-}
+
 @keyframes search_open {
   from {
     height: 0;
@@ -113,11 +101,6 @@ a {
 
 a:hover {
   text-decoration: none;
-}
-
-div {
-  margin: 5px;
-  padding: 2px 0;
 }
 
 hr {
@@ -243,6 +226,12 @@ blockquote {
   text-align: left;
   animation: fade_up 1s;
 }
+.edit_container {
+  text-align: left;
+
+  padding: 0 0 0 260px;
+}
+
 .article_container {
   padding: 5px;
   border-bottom: 1px solid white;
@@ -292,19 +281,9 @@ blockquote {
 }
 .change {
   display: flex;
-  position: absolute;
   top: 0px;
   right: 0px;
   background-color: #363636;
-}
-.change_open {
-  animation: change_open 1s;
-  pointer-events: initial;
-}
-.change_close {
-  opacity: 0;
-  animation: change_close 1s;
-  pointer-events: none;
 }
 .footer {
   position: absolute;

@@ -31,6 +31,7 @@ function signup() {
   loader.style.display = "block";
   let phone = document.getElementById("phonenum").value;
   let email = document.getElementById("email").value;
+  let name = document.getElementById("name").value;
   let password = document.getElementById("password").value;
   let p_reminder = document.getElementById("pass_reminder");
   let p_test = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
@@ -50,15 +51,28 @@ function signup() {
     document.getElementById("email").placeholder = "邮箱格式不正确";
   }
   if (p_test.test(phone) && em_test.test(email) && !p_reminder.classList.contains("error")) {
-    // TODO: post 发送到server
-    // return true;
-    alert("注册信息：\n手机号：" + phone + "\n邮箱：" + email + "\n密码：" + password);
-    signup_cont.classList.remove("fade_left");
-    signup_cont.classList.add("fade_right");
-    loader.style.display = "none";
-    signup_cont.addEventListener("animationend", function () {
-      window.location.href = "./index.html";
-    });
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open("POST", "https://api.liruinian.top:8880/signup", true);
+    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    httpRequest.send("phone=" + phone + "&email=" + email + "&username=" + name + "&password=" + password + "");
+    httpRequest.onreadystatechange = function () {
+      if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+        var return_data = httpRequest.responseText;
+        if (return_data == '"success"') {
+          signup_cont.classList.remove("fade_left");
+          signup_cont.classList.add("fade_right");
+          loader.style.display = "none";
+          signup_cont.addEventListener("animationend", function () {
+            window.location.href = "index.html";
+          });
+          return true;
+        } else {
+          alert(return_data);
+          loader.style.display = "none";
+          return false;
+        }
+      }
+    };
   } else {
     alert("请检查注册信息是否有误!");
     loader.style.display = "none";
@@ -72,7 +86,7 @@ function back() {
   signup_cont.classList.add("fade_left_back");
   signup_cont.addEventListener("animationend", function () {
     signup_cont.style.opacity = 0;
-    window.location.href = "./index.html";
+    window.location.href = "index.html";
   });
 }
 
