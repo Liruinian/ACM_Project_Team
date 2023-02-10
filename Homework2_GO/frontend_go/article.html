@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" href="./css/article.css" />
     <script src="./js/article.js" type="text/javascript"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/marked/2.0.3/marked.js"></script>
     <title>PRTS_Analyze_OS</title>
   </head>
   <body>
@@ -34,36 +35,6 @@
       </div>
       <div id="page_container" class="page_container"></div>
       <div class="loading" id="loading">Loading...</div>
-      <div class="change change_close" id="change">
-        <div class="art_list"></div>
-        <div class="func">
-          <div class="input_array">
-            <div id="editing" style="display: none">
-              正在修改：<br />
-              <input type="text" id="a_edit_inp" placeholder="正在修改" /><br />
-            </div>
-            <input type="text" id="a_title_inp" placeholder="文章标题" /><br />
-            <input type="text" id="a_category_inp" placeholder="类别" /><br />
-            <textarea id="a_content_inp" placeholder="文章内容"></textarea><br />
-            <input type="text" id="a_author_inp" placeholder="作者" /><br />
-            <input type="text" id="a_time_inp" placeholder="时间" /><br />
-            <input type="text" id="a_views_inp" placeholder="浏览量(wip)" /><br />
-            <input type="text" id="a_href_inp" placeholder="链接" /><br />
-          </div>
-          <div class="btn add" onclick="add_art()">
-            增加文章<br />
-            <hr />
-          </div>
-          <div class="btn del" onclick="rm_art()">
-            删除文章
-            <hr />
-          </div>
-          <div class="btn edit" onclick="edit_art()">
-            修改文章
-            <hr />
-          </div>
-        </div>
-      </div>
     </div>
   </body>
 </html>

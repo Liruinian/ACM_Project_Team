@@ -16,12 +16,10 @@ html {
 
   font-family: "BenderLight", "sans-serif";
 }
-.page_container,
-.edit_container {
+.page_container {
   scroll-behavior: smooth;
 }
-.page_container div,
-.edit_container div {
+.page_container div {
   margin: 5px;
   padding: 2px 0;
 }

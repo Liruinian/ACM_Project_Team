@@ -92,13 +92,14 @@ hr {
 input,
 textarea {
   color: #ffffff;
-  width: 200px;
+  width: 150px;
   height: 30px;
   font-size: 13px;
+  text-align: center;
   border: none;
   background: none;
   border-radius: 0;
-  border-bottom: 2px solid rgba(102, 102, 102, 0.22);
+  border-bottom: 2px solid rgba(138, 138, 138, 0.432);
   margin-bottom: 10px;
   font-weight: bold;
   font-family: "BenderLight";
@@ -182,7 +183,10 @@ blockquote {
   backdrop-filter: blur(10px);
   border-radius: 10px;
 }
-
+.input_array {
+  width: 70%;
+  padding-left: 50px;
+}
 .b_text {
   font-size: 18px;
   font-weight: bold;
@@ -207,4 +211,11 @@ blockquote {
 }
 .editormd-preview {
   font-family: "BenderLight";
+}
+#a_title_inp {
+  font-size: larger;
+  width: 90%;
+}
+#a_href_inp {
+  width: 90%;
 }

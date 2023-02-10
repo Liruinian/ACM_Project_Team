@@ -52,13 +52,13 @@ function signup() {
   }
   if (p_test.test(phone) && em_test.test(email) && !p_reminder.classList.contains("error")) {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://127.0.0.1:5000/signup", true);
+    httpRequest.open("POST", "http://127.0.0.1:8880/signup", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("phone=" + phone + "&email=" + email + "&username=" + name + "&password=" + password + "");
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var return_data = httpRequest.responseText;
-        if (return_data == "success") {
+        if (return_data == '"success"') {
           signup_cont.classList.remove("fade_left");
           signup_cont.classList.add("fade_right");
           loader.style.display = "none";

@@ -44,13 +44,13 @@ function login() {
     // document.getElementById("submit").click();
 
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://127.0.0.1:5000/login", true);
+    httpRequest.open("POST", "http://127.0.0.1:8880/login", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("username=" + account + "&password=" + password + "&login_type=" + login_type + "");
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var return_data = httpRequest.responseText;
-        if (return_data == "success") {
+        if (return_data == '"success"') {
           login_cont.classList.remove("fade_left");
           login_cont.classList.add("fade_right");
           loader.style.display = "none";
