@@ -20,7 +20,7 @@ function newart() {
   var content = editor.getMarkdown();
 
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880:8880:8880/upload-art", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/upload-art", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send(
     "edit=false" +
@@ -54,7 +54,7 @@ function delart() {
   var id = document.getElementById("edit_art_id").innerHTML;
 
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880:8880:8880/delete-art", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/delete-art", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send("id=" + id);
   httpRequest.onreadystatechange = function () {
@@ -76,7 +76,7 @@ function submit() {
   var content = editor.getMarkdown();
 
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880:8880:8880/upload-art", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/upload-art", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send(
     "edit=true&id=" +
@@ -112,7 +112,7 @@ function home() {
 }
 function logout() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880:8880:8880/logout", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/logout", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
@@ -128,7 +128,7 @@ function logout() {
 }
 function load_articles() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880:8880:8880/get-articles", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/get-articles", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
@@ -183,7 +183,7 @@ function user_classify() {
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880:8880:8880/userinfo", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/userinfo", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
