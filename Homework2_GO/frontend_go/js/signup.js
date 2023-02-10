@@ -52,7 +52,7 @@ function signup() {
   }
   if (p_test.test(phone) && em_test.test(email) && !p_reminder.classList.contains("error")) {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://101.43.177.2:8880/signup", true);
+    httpRequest.open("POST", "https://api.lituinian.top/signup", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("phone=" + phone + "&email=" + email + "&username=" + name + "&password=" + password + "");
     httpRequest.onreadystatechange = function () {
