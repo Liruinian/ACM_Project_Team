@@ -41,7 +41,7 @@ func main() {
 	r.GET("/hello", func(context *gin.Context) {
 		context.JSON(200, gin.H{"msg": "hello,gin"})
 	})
-	r.RunTLS(":443", "api.liruinian.top.pem", "api.liruinian.top.key")
+	r.RunTLS(":8880", "api.liruinian.top.pem", "api.liruinian.top.key")
 
 }
 
@@ -49,7 +49,7 @@ func TlsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secureMiddleware := secure.New(secure.Options{
 			SSLRedirect: true,
-			SSLHost:     "api.liruinian.top:443",
+			SSLHost:     "api.liruinian.top:8880",
 		})
 		err := secureMiddleware.Process(c.Writer, c.Request)
 
