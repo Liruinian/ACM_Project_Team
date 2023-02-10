@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/gookit/color"
 	"log"
 	time2 "time"
 )
@@ -23,7 +24,7 @@ type SignupForm struct {
 type UserInfo struct {
 	Username   string `json:"username"`
 	Usertype   string `json:"usertype"`
-	Expiretime int64  `json:"expiration"`
+	ExpireTime int64  `json:"expiration"`
 }
 type ArticleForm struct {
 	title    string
@@ -45,13 +46,13 @@ func signup(ginServer *gin.Engine) {
 		sForm.username = context.PostForm("username")
 		sForm.pass = context.PostForm("password")
 		sForm.usertype = "user"
-		if CheckIfExist(Dbl, 1, sForm.phone) || CheckIfExist(Dbl, 2, sForm.email) || CheckIfExist(Dbl, 3, sForm.username) {
-			context.JSON(200, "注册失败：用户已存在 请尝试更改邮箱、手机号或用户名")
+		if sForm.username == "" || sForm.email == "" || sForm.phone == "" || sForm.pass == "" {
+			context.JSON(200, gin.H{"status": "注册部分不能有空值"})
 			return
 		}
-
-		if sForm.username == "" || sForm.email == "" || sForm.phone == "" || sForm.pass == "" {
-			context.JSON(200, "注册部分不能有空值")
+		if CheckIfExist(Dbl, 1, sForm.phone) || CheckIfExist(Dbl, 2, sForm.email) || CheckIfExist(Dbl, 3, sForm.username) {
+			log.Println(context.ClientIP() + "User Signup Failed: Existed phone or email")
+			context.JSON(200, gin.H{"status": "注册失败：用户已存在 请尝试更改邮箱、手机号或用户名"})
 			return
 		}
 		result, err := Dbl.Exec("INSERT INTO login(phone,email,username,password,usertype) VALUES (?,?,?,?,?)", sForm.phone, sForm.email, sForm.username, sForm.pass, sForm.usertype)
@@ -59,14 +60,16 @@ func signup(ginServer *gin.Engine) {
 		if err != nil {
 			panic(err)
 		}
+		log.Println(color.FgGreen.Render(context.ClientIP() + " User Signup Success"))
 		fmt.Printf("Successfully Registered with ID: %d\n", id)
-		context.JSON(200, "success")
+		context.JSON(200, gin.H{"status": "success"})
 		return
 	})
 }
 
 func login(ginServer *gin.Engine) {
 	ginServer.POST("/login", func(context *gin.Context) {
+		ip := context.ClientIP()
 		var lForm LoginForm
 		var sqlStr, username, password, usertype string
 		context.DefaultPostForm("type", "post")
@@ -74,7 +77,7 @@ func login(ginServer *gin.Engine) {
 		lForm.pass = context.PostForm("password")
 		lForm.loginType = context.PostForm("login_type")
 		if lForm.usr == "" || lForm.pass == "" {
-			context.JSON(200, "用户名或密码不能为空")
+			context.JSON(200, gin.H{"status": "用户名或密码不能为空"})
 			return
 		}
 		if lForm.loginType == "1" {
@@ -91,16 +94,19 @@ func login(ginServer *gin.Engine) {
 
 		err := rows.Scan(&username, &password, &usertype)
 		if err != nil {
-			context.JSON(200, "登录失败：请检查用户名或密码是否正确")
+			log.Println(ip + " User Login Failed ")
+			context.JSON(200, gin.H{"status": "登录失败：请检查用户名或密码是否正确"})
 			return
 		}
 		log.Println(username, password, usertype)
 		if lForm.pass == password {
-			grantPermission(context.ClientIP(), username, usertype)
-			context.JSON(200, "success")
+			grantPermission(ip, username, usertype)
+			log.Printf(color.FgGreen.Render(ip + " Successfully Logged in with username: " + username))
+			context.JSON(200, gin.H{"status": "success"})
 			return
 		} else {
-			context.JSON(200, "登录失败：请检查用户名或密码是否正确")
+			log.Println(ip + " User Login Failed")
+			context.JSON(200, gin.H{"status": "登录失败：请检查用户名或密码是否正确"})
 			return
 		}
 
@@ -109,21 +115,13 @@ func login(ginServer *gin.Engine) {
 func logout(ginServer *gin.Engine) {
 	ginServer.POST("/logout", func(context *gin.Context) {
 		ip := context.ClientIP()
-		rows, err := Dbl.Query("SELECT ip,expiretime FROM currentlogins")
+		_, err := Dbl.Exec("DELETE FROM currentlogins WHERE ip LIKE ?", ip)
 		if err != nil {
-			panic(err)
+			context.JSON(200, gin.H{"status": "Logout Failed"})
+			log.Fatal(err)
 		}
-		defer rows.Close()
-		for rows.Next() {
-			var dbip string
-			var extime int64
-			if err = rows.Scan(&dbip, &extime); err != nil {
-				context.JSON(200, "登出失败")
-				log.Fatal(err)
-			}
-			_, err = Dbl.Exec("DELETE FROM currentlogins WHERE ip LIKE ?", ip)
-			context.JSON(200, "success")
-		}
+		log.Println(ip + " User Logout")
+		context.JSON(200, gin.H{"status": "success"})
 	})
 }
 func getIdentity(ginServer *gin.Engine) {
@@ -132,30 +130,32 @@ func getIdentity(ginServer *gin.Engine) {
 		if isPermitted(userip, false) {
 			var uInfo UserInfo
 			rows := Dbl.QueryRow("SELECT username,usertype,expiretime FROM currentlogins WHERE ip=?", userip)
-			err := rows.Scan(&uInfo.Username, &uInfo.Usertype, &uInfo.Expiretime)
+			err := rows.Scan(&uInfo.Username, &uInfo.Usertype, &uInfo.ExpireTime)
 			if err != nil {
 				log.Fatal(err)
 			}
 			bjson, _ := json.Marshal(uInfo)
-			log.Println(string(bjson))
+			log.Println(userip + " User Get Identity: " + string(bjson))
 			context.JSON(200, string(bjson))
 		} else {
-			context.JSON(200, "Please Login")
+			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
 		}
 	})
 }
 func getArticles(ginServer *gin.Engine) {
 	ginServer.POST("/get-articles", func(context *gin.Context) {
-		if isPermitted(context.ClientIP(), false) {
+		ip := context.ClientIP()
+		if isPermitted(ip, false) {
 
 			art, err := getJSON(Dba, "SELECT * FROM articles")
 			if err != nil {
-				context.JSON(200, err)
+				context.JSON(200, gin.H{"status": "获取文章失败，请稍后重试"})
 				return
 			}
+			log.Println(ip + " User Get Articles")
 			context.JSON(200, art)
 		} else {
-			context.JSON(200, "Please Login")
+			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
 		}
 	})
 }
@@ -168,9 +168,10 @@ func removeArticle(ginServer *gin.Engine) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			context.JSON(200, "成功删除文章，文章id:"+aId)
+			log.Println(color.FgYellow.Render(userip + " Admin Remove Articles"))
+			context.JSON(200, gin.H{"status": "成功删除文章，文章id:" + aId})
 		} else {
-			context.JSON(200, "Please Login With Admin Account")
+			context.JSON(200, gin.H{"status": "请以管理员身份登录系统"})
 		}
 	})
 }
@@ -192,25 +193,23 @@ func uploadArticle(ginServer *gin.Engine) {
 				if err != nil {
 					log.Fatal(err)
 				}
-				context.JSON(200, "成功创建新文章")
+				context.JSON(200, gin.H{"status": "成功创建新文章"})
 			} else {
 				var Aid = context.PostForm("id")
 				_, err := Dba.Exec("UPDATE articles SET title=?,category=?,content=?,author=?,time=?,views=?,href=? WHERE id=?", aForm.title, aForm.category, aForm.content, aForm.author, aForm.time, aForm.views, aForm.href, Aid)
 
 				if err != nil {
-					context.JSON(200, "Modify Article FAILED")
 					log.Fatal(err)
 				}
-				context.JSON(200, "成功修改文章")
+				log.Println(color.FgYellow.Render(userip + " User Modify Articles"))
+				context.JSON(200, gin.H{"status": "成功修改文章"})
 			}
 		} else {
-			context.JSON(200, "Please Login With Admin Account")
+			context.JSON(200, gin.H{"status": "请以管理员身份登录系统"})
 		}
 	})
 }
-func grantPermission(ip, username, usertype string) {
-	log.Println("Permission Added For ", ip, username, usertype)
-
+func grantPermission(ip, username, usertype string) int64 {
 	time := time2.Now().Unix() + 3600
 
 	result, err := Dbl.Exec("INSERT INTO currentlogins(ip,username,usertype,expiretime) VALUES (?,?,?,?)", ip, username, usertype, time)
@@ -218,7 +217,7 @@ func grantPermission(ip, username, usertype string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Successfully Logged in with ID: %d\n", id)
+	return id
 }
 
 func isPermitted(ip string, isAdminOnly bool) bool {

@@ -6,6 +6,7 @@ $(function () {
     editorTheme: "pastel-on-dark",
     width: "100%",
     height: 600,
+    emoji: false,
     // markdown: "xxxx",     // dynamic set Markdown text
     path: "lib/", // Autoload modules mode, codemirror, marked... dependents libs path
   });
@@ -45,7 +46,8 @@ function newart() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      alert(json);
+      json = JSON.parse(json);
+      alert(json.status);
       location.reload();
     }
   };
@@ -60,7 +62,8 @@ function delart() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      alert(json);
+      json = JSON.parse(json);
+      alert(json.status);
       location.reload();
     }
   };
@@ -102,7 +105,8 @@ function submit() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      alert(json);
+      json = JSON.parse(json);
+      alert(json.status);
       location.reload();
     }
   };
@@ -118,8 +122,9 @@ function logout() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      if (json != '"success"') {
-        alert(json);
+      json = JSON.parse(json);
+      if (json.status != "success") {
+        alert(json.status);
       } else {
         window.location.href = "index.html";
       }
@@ -134,10 +139,12 @@ function load_articles() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var jsonart = httpRequest.responseText;
-      if (jsonart == '"Please Login"') {
+      jsonart = JSON.parse(jsonart);
+      if (jsonart.status != undefined) {
+        alert(jsonart.status);
         window.location.href = "index.html";
       }
-      articles = JSON.parse(JSON.parse(jsonart));
+      articles = JSON.parse(jsonart);
       console.log(articles);
       articles.reverse();
       let searchol = document.getElementById("searchol");
@@ -160,6 +167,7 @@ function load_articles() {
             editorTheme: "pastel-on-dark",
             width: "100%",
             height: 600,
+            emoji: false,
             markdown: art.content,
             path: "lib/",
           });
@@ -189,10 +197,11 @@ function user_classify() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      if (json == '"Please Login"') {
-        window.location.href = "index.html";
+      json = JSON.parse(json);
+      if (json.status != undefined) {
+        return;
       }
-      uInfo = JSON.parse(JSON.parse(json));
+      uInfo = JSON.parse(json);
     }
 
     let usrgroupE = document.getElementById("usrgroup_s");

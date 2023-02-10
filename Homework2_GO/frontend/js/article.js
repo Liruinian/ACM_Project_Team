@@ -6,8 +6,9 @@ function logout() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      if (json != '"success"') {
-        alert(json);
+      json = JSON.parse(json);
+      if (json.status != "success") {
+        alert(json.status);
       } else {
         window.location.href = "index.html";
       }
@@ -78,10 +79,12 @@ function load_articles() {
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var jsonart = httpRequest.responseText;
-      if (jsonart == '"Please Login"') {
+      jsonart = JSON.parse(jsonart);
+      if (jsonart.status != undefined) {
+        alert(jsonart.status);
         window.location.href = "index.html";
       }
-      articles = JSON.parse(JSON.parse(jsonart));
+      articles = JSON.parse(jsonart);
       console.log(articles);
       articles.reverse();
       let i = articles.length + 1;
@@ -147,8 +150,12 @@ function user_classify() {
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-      var jsonart = httpRequest.responseText;
-      uInfo = JSON.parse(JSON.parse(jsonart));
+      var json = httpRequest.responseText;
+      json = JSON.parse(json);
+      if (json.status != undefined) {
+        return;
+      }
+      uInfo = JSON.parse(json);
     }
 
     let usrgroupE = document.getElementById("usrgroup_s");

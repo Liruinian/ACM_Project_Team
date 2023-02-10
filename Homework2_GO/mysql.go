@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	"github.com/gookit/color"
 	"log"
 	"time"
 )
@@ -20,10 +20,10 @@ func mysqlConn(DbName string) *sql.DB {
 	db.SetConnMaxLifetime(10 * time.Minute)
 	db.SetConnMaxIdleTime(10 * time.Minute)
 	if err := db.Ping(); err != nil {
-		fmt.Println("open database fail")
+		log.Println(color.FgRed.Render("Open " + DbName + " Database Fail"))
 		return nil
 	}
-	fmt.Println("connect success")
+	log.Println(color.FgGreen.Render("Database " + DbName + " Connect Success"))
 	return db
 }
 

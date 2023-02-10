@@ -27,6 +27,9 @@ html {
 .page_container img {
   width: 100%;
 }
+.page_container .meme {
+  width: 100px;
+}
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
@@ -157,6 +160,10 @@ blockquote {
   border-right: 4px solid rgb(255, 238, 34);
   animation: menu_down 1s;
 }
+.mobilemenu {
+  display: flex;
+  flex-direction: row;
+}
 .menuitem {
   margin: 10px;
   padding: 5px;
@@ -200,7 +207,7 @@ blockquote {
 }
 
 .b_text {
-  font-size: 18px;
+  font-size: 35px;
   font-weight: bold;
 }
 .text {

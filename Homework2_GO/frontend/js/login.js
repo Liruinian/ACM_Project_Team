@@ -49,8 +49,9 @@ function login() {
     httpRequest.send("username=" + account + "&password=" + password + "&login_type=" + login_type + "");
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-        var return_data = httpRequest.responseText;
-        if (return_data == '"success"') {
+        var json = httpRequest.responseText;
+        json = JSON.parse(json);
+        if (json.status != '"success"') {
           login_cont.classList.remove("fade_left");
           login_cont.classList.add("fade_right");
           loader.style.display = "none";
@@ -58,7 +59,7 @@ function login() {
             window.location.href = "./article.html";
           });
         } else {
-          alert(return_data);
+          alert(json.status);
           loader.style.display = "none";
         }
       }
