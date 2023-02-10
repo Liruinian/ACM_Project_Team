@@ -51,7 +51,7 @@ function login() {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var json = httpRequest.responseText;
         json = JSON.parse(json);
-        if (json.status != "success") {
+        if (json.status == "success") {
           login_cont.classList.remove("fade_left");
           login_cont.classList.add("fade_right");
           loader.style.display = "none";
