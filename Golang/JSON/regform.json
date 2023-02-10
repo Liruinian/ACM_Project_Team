@@ -1,0 +1,36 @@
+{
+	"status": "ok",
+	"version": 0.1,
+	"name": "user register form",
+	"users": [
+		{
+			"name": "YOLO_whynot",
+			"gender": "male",
+			"age": 18,
+			"tags": [
+				"Amazing Skills",
+				"Bad Internet",
+				"Always Online"
+			]
+		},
+		{
+			"name": "anAppleFan",
+			"gender": "female",
+			"age": 17,
+			"tags": [
+				"iPhone",
+				"iPad",
+				"Macbook"
+			]
+		},
+		{
+			"name": "Weather",
+			"gender": "female",
+			"age": 21,
+			"tags": [
+				"Snow",
+				"Also Snow"
+			]
+		}
+	]
+}

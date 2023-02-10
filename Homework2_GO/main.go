@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/unrolled/secure"
 	"net/http"
 )
 
@@ -26,6 +27,8 @@ func Cors() gin.HandlerFunc {
 func main() {
 	r := gin.New()
 	r.Use(Cors())
+	r.Use(TlsHandler())
+
 	Dba = mysqlConn("articles")
 	Dbl = mysqlConn("login")
 	go login(r)
@@ -38,6 +41,23 @@ func main() {
 	r.GET("/hello", func(context *gin.Context) {
 		context.JSON(200, gin.H{"msg": "hello,gin"})
 	})
+	r.RunTLS(":443", "api.liruinian.top.pem", "api.liruinian.top.key")
 
-	r.Run(":443")
+}
+
+func TlsHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		secureMiddleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     "api.liruinian.top:443",
+		})
+		err := secureMiddleware.Process(c.Writer, c.Request)
+
+		// If there was an error, do not continue.
+		if err != nil {
+			return
+		}
+
+		c.Next()
+	}
 }
