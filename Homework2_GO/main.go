@@ -25,9 +25,12 @@ func Cors() gin.HandlerFunc {
 }
 
 func main() {
+	useTLS := false
 	r := gin.New()
 	r.Use(Cors())
-	r.Use(TlsHandler())
+	if useTLS {
+		r.Use(TlsHandler())
+	}
 
 	Dba = mysqlConn("articles")
 	Dbl = mysqlConn("login")
@@ -41,8 +44,11 @@ func main() {
 	r.GET("/hello", func(context *gin.Context) {
 		context.JSON(200, gin.H{"msg": "hello,gin"})
 	})
-	r.RunTLS(":8880", "api.liruinian.top.pem", "api.liruinian.top.key")
-
+	if useTLS {
+		r.RunTLS(":8880", "api.liruinian.top.pem", "api.liruinian.top.key")
+	} else {
+		r.Run(":8880")
+	}
 }
 
 func TlsHandler() gin.HandlerFunc {

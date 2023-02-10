@@ -1,6 +1,6 @@
 function logout() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "https://api.liruinian.top:8880/logout", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/logout", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
@@ -37,7 +37,7 @@ function search_inp() {
   si = document.getElementById("search_inp");
   if (si.value != "") {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "https://api.liruinian.top:8880/article", true);
+    httpRequest.open("POST", "http://8.130.53.145:8880/article", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("search=" + si.value);
     httpRequest.onreadystatechange = function () {
@@ -72,7 +72,7 @@ var articles = "";
 
 function load_articles() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "https://api.liruinian.top:8880/get-articles", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/get-articles", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
@@ -142,7 +142,7 @@ function user_classify() {
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "https://api.liruinian.top:8880/userinfo", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/userinfo", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
