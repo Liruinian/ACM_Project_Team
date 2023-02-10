@@ -37,7 +37,7 @@ type ArticleForm struct {
 
 func signup(ginServer *gin.Engine) {
 	ginServer.POST("/signup", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
+
 		var sForm SignupForm
 		context.DefaultPostForm("type", "post")
 		sForm.phone = context.PostForm("phone")
@@ -67,7 +67,6 @@ func signup(ginServer *gin.Engine) {
 
 func login(ginServer *gin.Engine) {
 	ginServer.POST("/login", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
 		var lForm LoginForm
 		var sqlStr, username, password, usertype string
 		context.DefaultPostForm("type", "post")
@@ -109,7 +108,6 @@ func login(ginServer *gin.Engine) {
 }
 func logout(ginServer *gin.Engine) {
 	ginServer.POST("/logout", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
 		ip := context.ClientIP()
 		rows, err := Dbl.Query("SELECT ip,expiretime FROM currentlogins")
 		if err != nil {
@@ -130,7 +128,6 @@ func logout(ginServer *gin.Engine) {
 }
 func getIdentity(ginServer *gin.Engine) {
 	ginServer.POST("/userinfo", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
 		userip := context.ClientIP()
 		if isPermitted(userip, false) {
 			var uInfo UserInfo
@@ -149,7 +146,6 @@ func getIdentity(ginServer *gin.Engine) {
 }
 func getArticles(ginServer *gin.Engine) {
 	ginServer.POST("/get-articles", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
 		if isPermitted(context.ClientIP(), false) {
 
 			art, err := getJSON(Dba, "SELECT * FROM articles")
@@ -165,7 +161,6 @@ func getArticles(ginServer *gin.Engine) {
 }
 func removeArticle(ginServer *gin.Engine) {
 	ginServer.POST("/delete-art", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
 		userip := context.ClientIP()
 		aId := context.PostForm("id")
 		if isPermitted(userip, true) {
@@ -182,7 +177,6 @@ func removeArticle(ginServer *gin.Engine) {
 
 func uploadArticle(ginServer *gin.Engine) {
 	ginServer.POST("/upload-art", func(context *gin.Context) {
-		context.Header("Access-Control-Allow-Origin", "http://127.0.0.1:5500")
 		userip := context.ClientIP()
 		if isPermitted(userip, true) {
 			var aForm ArticleForm

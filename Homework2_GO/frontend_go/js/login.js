@@ -44,7 +44,7 @@ function login() {
     // document.getElementById("submit").click();
 
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://127.0.0.1:8880/login", true);
+    httpRequest.open("POST", "http://101.43.177.2:8880/login", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("username=" + account + "&password=" + password + "&login_type=" + login_type + "");
     httpRequest.onreadystatechange = function () {
