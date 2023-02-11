@@ -1,9 +1,105 @@
-{{ define "stateindicator.html" }}
-<input type="button" onclick="logout()" value="后退" /><br />
-{{.logStatus}}<br />
+{{ define "data.html" }}
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Data页面</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            margin: 20px;
+            font-size: 20px;
+        }
+        h2{
+            font-size: 40px;
+        }
+        .form {
+            position: absolute;
+            left: 0;
+            width: 300px;
+            padding: 20px;
+            margin: 40px auto auto;
+            background-color: rgb(54, 120, 203);
+            color: white;
+            box-shadow: 10px 10px 5px rgb(34, 74, 122, 0.5);
+        }
+        .backgrounddiv {
+            width: 100%;
+            height: 400px;
+            background-color: rgb(34, 74, 122);
+            margin-bottom: 32px;
+        }
+        .bgtextdiv {
+            position: absolute;
+            right: 0;
+            text-align: right;
+            margin-top: 0;
+        }
+        .bgtext {
+            color: white;
+            font-size: 150px;
+            font-weight: bolder;
+            margin-top: 0;
+        }
+        input {
+            color: white;
+            width: 100px;
+            height: 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 10px;
+            background-color: rgb(34, 187, 255);
+        }
+        input:hover {
+            background-color: rgb(0, 162, 232);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h2>数据显示</h2>
+    <hr />
+    <div class="backgrounddiv">
+        <div class="bgtextdiv">
+            <p class="bgtext">NEAU<br />ACM</p>
+        </div>
+        <div class="form">
+            <input type="button" onclick="logout()" value="后退" /><br />
+            <p>{{.loginOnlyData}}</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
 <script>
-function logout(){
-    window.history.back();
-}
+    function logout(){
+        window.history.back();
+    }
+    function getCookie(cname)
+    {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++)
+        {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        }
+        return "";
+    }
+    if(getCookie("login") == "Success"){
+        document.getElementsByTagName("input")[0].style.backgroundColor = "rgb(19 72 17)"
+    }else{
+        document.getElementsByTagName("input")[0].style.backgroundColor = "rgb(180 36 36)"
+
+    }
 </script>
 {{ end }}

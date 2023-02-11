@@ -1,0 +1,116 @@
+{{ define "index.html" }}
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <title>login界面</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            margin: 20px;
+            font-size: 20px;
+        }
+        h2{
+            font-size: 40px;
+        }
+        input {
+            color: white;
+            width: 270px;
+            height: 50px;
+            font-size: 1em;
+            border: none;
+            background: none;
+            border-bottom: 2px solid white;
+            border-radius: 0;
+            margin-bottom: 10px;
+        }
+        input:focus {
+            outline: none;
+        }
+        input::placeholder {
+            color: white;
+        }
+        .form {
+            position: absolute;
+            left: 0;
+            width: 300px;
+            padding: 20px;
+            margin: 40px auto auto;
+            background-color: rgb(54, 120, 203);
+            color: white;
+            box-shadow: 10px 10px 5px rgb(34, 74, 122, 0.5);
+        }
+        .backgrounddiv {
+            width: 100%;
+            height: 400px;
+            background-color: rgb(34, 74, 122);
+            margin-bottom: 32px;
+        }
+        .bgtextdiv {
+            position: absolute;
+            right: 0;
+            text-align: right;
+            margin-top: 0;
+        }
+        .bgtext {
+            color: white;
+            font-size: 150px;
+            font-weight: bolder;
+            margin-top: 0;
+        }
+        .login {
+            background-color: rgb(34, 187, 255);
+            border: none;
+        }
+        .login:hover {
+            background-color: rgb(0, 162, 232);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h2>登录表单</h2>
+    <hr />
+    <div class="backgrounddiv">
+        <div class="bgtextdiv">
+            <p class="bgtext">NEAU<br />ACM</p>
+        </div>
+        <div class="form">
+            <form method="POST" action="/">
+                <input onchange="check()" type="text" name="idnum" id="idnum" placeholder="学号" /> <br />
+                <input onchange="check()" class="pass" type="password" name="pass" id="pass" placeholder="密码" /><br />
+                <p id="inform" style="font-size:16px">学号为大写A加八位数字<br />密码为七位及以上且包含字母和数字</p>
+                <input class="login" type="submit" value="登录" />
+            </form>
+            <p style="font-size:14px">登录信息 (在生产环境中不会出现，仅用于测试)<br />学号: A19220064 <br />密码: ACMlogin2023</p>
+        </div>
+        <script type="text/javascript">
+            let idtest = /^A[0-9]{8}$/;
+            let passtest = /^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$/;
+            let inform = document.getElementById("inform")
+            let idnum = document.getElementById("idnum");
+            let pass = document.getElementById("pass");
+            function check(){
+                if(pass.value !== ""){
+                    if(!idtest.test(idnum.value) || !passtest.test(pass.value)){
+                        inform.innerHTML = "学号输入不正确或密码强度过低<br />请检查输入！";
+                    }else{
+                        inform.innerHTML = "校验通过!<br />可以尝试登录";
+                    }
+                }
+            }
+        </script>
+    </div>
+</div>
+</body>
+</html>
+{{ end }}
