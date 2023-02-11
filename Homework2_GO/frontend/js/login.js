@@ -41,17 +41,22 @@ function login() {
       login_type = 2;
     }
 
-    // document.getElementById("submit").click();
-
+    var loginform = {
+      username: account,
+      password: password,
+      login_type: login_type,
+    };
+    console.log(JSON.stringify(loginform));
     var httpRequest = new XMLHttpRequest();
     httpRequest.open("POST", "http://8.130.53.145:8880/login", true);
-    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    httpRequest.send("username=" + account + "&password=" + password + "&login_type=" + login_type + "");
+    httpRequest.setRequestHeader("Content-type", "application/raw");
+    httpRequest.send(JSON.stringify(loginform));
+
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var json = httpRequest.responseText;
         json = JSON.parse(json);
-        if (json.status != '"success"') {
+        if (json.status == "success") {
           login_cont.classList.remove("fade_left");
           login_cont.classList.add("fade_right");
           loader.style.display = "none";

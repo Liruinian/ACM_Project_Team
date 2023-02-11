@@ -1,12 +1,33 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gookit/color"
 	"github.com/unrolled/secure"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 )
+
+type Config struct {
+	Port    string
+	UseCors bool
+	UseTLS  bool
+	TLSPem  string
+	TLSKey  string
+	SSLHost string
+}
+
+var Conf = Config{
+	Port:    ":8880", // 网站访问端口
+	UseCors: true,    // 是否允许跨域访问
+	UseTLS:  false,   //是否使用TLS加密（https）*使用加密需要填写以下字段
+	TLSPem:  "api.liruinian.top.pem",
+	TLSKey:  "api.liruinian.top.key",
+	SSLHost: "api.liruinian.top:8880",
+}
 
 func Cors() gin.HandlerFunc {
 	// 跨域设置： 前后端分离在不同服务器上，需要进行跨域处理
@@ -31,7 +52,7 @@ func TlsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secureMiddleware := secure.New(secure.Options{
 			SSLRedirect: true,
-			SSLHost:     "api.liruinian.top:8880",
+			SSLHost:     Conf.SSLHost,
 		})
 		err := secureMiddleware.Process(c.Writer, c.Request)
 
@@ -45,34 +66,69 @@ func TlsHandler() gin.HandlerFunc {
 }
 
 func main() {
-	useTLS := false
+
 	r := gin.New()
 	r.Use(Cors())
-	if useTLS {
+	if Conf.UseTLS {
 		r.Use(TlsHandler())
 	}
 
-	Dba = mysqlConn("articles")
-	Dbl = mysqlConn("login")
-	login(r)
-	signup(r)
-	getArticles(r)
-	getIdentity(r)
-	logout(r)
-	uploadArticle(r)
-	removeArticle(r)
-	r.GET("/hello", func(context *gin.Context) {
-		context.JSON(200, gin.H{"msg": "hello,gin"})
+	Dba = MysqlConn("articles")
+	Dbl = MysqlConn("login")
+
+	Login(r)
+	Signup(r)
+	GetIdentity(r)
+	Logout(r)
+	GetArticles(r)
+	GetArticle(r)
+	GetArticleList(r)
+	UploadArticle(r)
+	RemoveArticle(r)
+	SearchArticle(r)
+
+	r.GET("/hello", func(c *gin.Context) {
+		c.JSON(200, gin.H{"msg": "hello,gin"})
 	})
-	if useTLS {
-		err := r.RunTLS(":8880", "api.liruinian.top.pem", "api.liruinian.top.key")
+
+	r.POST("/upload", func(c *gin.Context) {
+		file, _ := c.FormFile("file")
+		log.Println(file.Filename)
+		dst := "./" + file.Filename
+		err := c.SaveUploadedFile(file, dst)
 		if err != nil {
-			log.Fatal(err)
+			return
+		}
+
+		c.String(200, fmt.Sprintf("'%s' uploaded!", file.Filename))
+	})
+
+	if Conf.UseTLS {
+		err := r.RunTLS(Conf.Port, Conf.TLSPem, Conf.TLSKey)
+		if err != nil {
+			log.Println(color.FgRed.Render(err.Error()))
 		}
 	} else {
-		err := r.Run(":8880")
+		err := r.Run(Conf.Port)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(color.FgRed.Render(err.Error()))
 		}
+	}
+}
+
+// GetPwd 给密码加密
+func GetPwd(pwd string) ([]byte, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(pwd), bcrypt.DefaultCost)
+	return hash, err
+}
+
+// ComparePwd 比对密码
+func ComparePwd(pwd1 string, pwd2 string) bool {
+	// Returns true on success, pwd1 is for the database.
+	err := bcrypt.CompareHashAndPassword([]byte(pwd1), []byte(pwd2))
+	if err != nil {
+		return false
+	} else {
+		return true
 	}
 }

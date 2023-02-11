@@ -51,10 +51,19 @@ function signup() {
     document.getElementById("email").placeholder = "邮箱格式不正确";
   }
   if (p_test.test(phone) && em_test.test(email) && !p_reminder.classList.contains("error")) {
+    var regform = {
+      phone: phone,
+      email: email,
+      username: name,
+      password: password,
+      usertype: "user",
+    };
+    console.log(JSON.stringify(regform));
+
     var httpRequest = new XMLHttpRequest();
     httpRequest.open("POST", "http://8.130.53.145:8880/signup", true);
-    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    httpRequest.send("phone=" + phone + "&email=" + email + "&username=" + name + "&password=" + password + "");
+    httpRequest.setRequestHeader("Content-type", "application/raw");
+    httpRequest.send(JSON.stringify(regform));
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var json = httpRequest.responseText;

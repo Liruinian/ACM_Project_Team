@@ -13,7 +13,7 @@ var (
 	Dbl *sql.DB
 )
 
-func mysqlConn(DbName string) *sql.DB {
+func MysqlConn(DbName string) *sql.DB {
 	db, _ := sql.Open("mysql", "root:@a20040207@tcp(127.0.0.1:3306)/"+DbName)
 	db.SetConnMaxLifetime(100)
 	db.SetMaxIdleConns(10)
@@ -34,13 +34,13 @@ func CheckIfExist(db *sql.DB, qKey int, qValue string) bool {
 	}
 	rows, err := db.Query("SELECT * FROM login")
 	if err != nil {
-		panic(err)
+		log.Println(color.FgRed.Render(err.Error()))
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var id, phone, email, username, password, usertype string
-		if err := rows.Scan(&id, &phone, &email, &username, &password, &usertype); err != nil {
-			log.Fatal(err)
+		if err = rows.Scan(&id, &phone, &email, &username, &password, &usertype); err != nil {
+			log.Println(color.FgRed.Render(err.Error()))
 		}
 		if qKey == 1 {
 			if phone == qValue {
@@ -72,12 +72,15 @@ func getJSON(db *sql.DB, sqlString string) (string, error) {
 	count := len(columns)
 	tableData := make([]map[string]interface{}, 0)
 	values := make([]interface{}, count)
-	valuePtrs := make([]interface{}, count)
+	valuePtrS := make([]interface{}, count)
 	for rows.Next() {
 		for i := 0; i < count; i++ {
-			valuePtrs[i] = &values[i]
+			valuePtrS[i] = &values[i]
 		}
-		rows.Scan(valuePtrs...)
+		err = rows.Scan(valuePtrS...)
+		if err != nil {
+			return "", err
+		}
 		entry := make(map[string]interface{})
 		for i, col := range columns {
 			var v interface{}

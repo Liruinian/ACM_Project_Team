@@ -38,14 +38,17 @@ function search_inp() {
   si = document.getElementById("search_inp");
   if (si.value != "") {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://8.130.53.145:8880/article", true);
-    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    httpRequest.send("search=" + si.value);
+    httpRequest.open("GET", "http://8.130.53.145:8880/search-articles?text=" + si.value, true);
+    httpRequest.send();
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var return_data = httpRequest.responseText;
         return_data = JSON.parse(return_data);
-        search_load(return_data);
+        if (return_data.status == "Not Found") {
+          alert(return_data.status);
+        } else {
+          search_load(return_data);
+        }
       }
     };
   } else {
@@ -73,7 +76,7 @@ var articles = "";
 
 function load_articles() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/get-articles", true);
+  httpRequest.open("GET", "http://8.130.53.145:8880/articles", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
@@ -83,6 +86,7 @@ function load_articles() {
       if (jsonart.status != undefined) {
         alert(jsonart.status);
         window.location.href = "index.html";
+        return;
       }
       articles = JSON.parse(jsonart);
       console.log(articles);
@@ -145,7 +149,7 @@ function user_classify() {
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/userinfo", true);
+  httpRequest.open("GET", "http://8.130.53.145:8880/userinfo", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {

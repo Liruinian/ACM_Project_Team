@@ -20,29 +20,21 @@ function newart() {
   var href = document.getElementById("a_href_inp").value;
   var content = editor.getMarkdown();
 
+  var artform = {
+    edit: false,
+    title: title,
+    category: category,
+    author: author,
+    time: time,
+    views: views,
+    href: href,
+    content: content,
+  };
+  console.log(JSON.stringify(artform));
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/upload-art", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send(
-    "edit=false" +
-      "&title=" +
-      title +
-      "&category=" +
-      category +
-      "&content=" +
-      content +
-      "&author=" +
-      author +
-      "&category=" +
-      category +
-      "&time=" +
-      time +
-      "&views=" +
-      views +
-      "&href=" +
-      href +
-      ""
-  );
+  httpRequest.open("PUT", "http://8.130.53.145:8880/articles", true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.send(JSON.stringify(artform));
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
@@ -54,11 +46,9 @@ function newart() {
 }
 function delart() {
   var id = document.getElementById("edit_art_id").innerHTML;
-
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/delete-art", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send("id=" + id);
+  httpRequest.open("DELETE", "http://8.130.53.145:8880/articles/" + id, true);
+  httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
@@ -77,31 +67,22 @@ function submit() {
   var views = document.getElementById("a_views_inp").value;
   var href = document.getElementById("a_href_inp").value;
   var content = editor.getMarkdown();
-
+  var artform = {
+    edit: true,
+    id: id,
+    title: title,
+    category: category,
+    author: author,
+    time: time,
+    views: views,
+    href: href,
+    content: content,
+  };
+  console.log(JSON.stringify(artform));
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/upload-art", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send(
-    "edit=true&id=" +
-      id +
-      "&title=" +
-      title +
-      "&category=" +
-      category +
-      "&content=" +
-      content +
-      "&author=" +
-      author +
-      "&category=" +
-      category +
-      "&time=" +
-      time +
-      "&views=" +
-      views +
-      "&href=" +
-      href +
-      ""
-  );
+  httpRequest.open("PUT", "http://8.130.53.145:8880/articles", true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.send(JSON.stringify(artform));
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
@@ -133,7 +114,7 @@ function logout() {
 }
 function load_articles() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/get-articles", true);
+  httpRequest.open("GET", "http://8.130.53.145:8880/articles", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
@@ -191,7 +172,7 @@ function user_classify() {
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/userinfo", true);
+  httpRequest.open("GET", "http://8.130.53.145:8880/userinfo", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
