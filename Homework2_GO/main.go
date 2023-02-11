@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gookit/color"
@@ -89,18 +88,6 @@ func main() {
 
 	r.GET("/hello", func(c *gin.Context) {
 		c.JSON(200, gin.H{"msg": "hello,gin"})
-	})
-
-	r.POST("/upload", func(c *gin.Context) {
-		file, _ := c.FormFile("file")
-		log.Println(file.Filename)
-		dst := "./" + file.Filename
-		err := c.SaveUploadedFile(file, dst)
-		if err != nil {
-			return
-		}
-
-		c.String(200, fmt.Sprintf("'%s' uploaded!", file.Filename))
 	})
 
 	if Conf.UseTLS {

@@ -1,0 +1,9 @@
+{{ define "stateindicator.html" }}
+<input type="button" onclick="logout()" value="后退" /><br />
+{{.logStatus}}<br />
+<script>
+function logout(){
+    window.history.back();
+}
+</script>
+{{ end }}
