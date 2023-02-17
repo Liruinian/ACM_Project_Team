@@ -61,14 +61,14 @@ function signup() {
     console.log(JSON.stringify(regform));
 
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://8.130.53.145:8880/signup", true);
+    httpRequest.open("POST", "http://8.130.53.145:8880/user/signup", true);
     httpRequest.setRequestHeader("Content-type", "application/raw");
     httpRequest.send(JSON.stringify(regform));
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var json = httpRequest.responseText;
         json = JSON.parse(json);
-        if (json.status == "success") {
+        if (json.msg == "success") {
           signup_cont.classList.remove("fade_left");
           signup_cont.classList.add("fade_right");
           loader.style.display = "none";
@@ -77,7 +77,7 @@ function signup() {
           });
           return true;
         } else {
-          alert(json.status);
+          alert(json.msg);
           loader.style.display = "none";
           return false;
         }

@@ -1,3 +1,19 @@
+iziToast.settings({
+  timeout: 10000,
+  progressBar: false,
+  close: false,
+  closeOnEscape: true,
+  position: "topCenter",
+  transitionIn: "bounceInDown",
+  transitionOut: "flipOutX",
+  displayMode: "replace",
+  layout: "1",
+  backgroundColor: "#00000040",
+  titleColor: "#efefef",
+  messageColor: "#efefef",
+  icon: "Fontawesome",
+  iconColor: "#efefef",
+});
 function check() {
   let account = document.getElementById("account");
   let password = document.getElementById("password");
@@ -48,7 +64,7 @@ function login() {
     };
     console.log(JSON.stringify(loginform));
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://8.130.53.145:8880/login", true);
+    httpRequest.open("POST", "https://api.liruinian.top/user/login", true);
     httpRequest.setRequestHeader("Content-type", "application/raw");
     httpRequest.send(JSON.stringify(loginform));
 
@@ -56,7 +72,8 @@ function login() {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var json = httpRequest.responseText;
         json = JSON.parse(json);
-        if (json.status == "success") {
+        if (json.msg == "success") {
+          LoginCookieHandler(json);
           login_cont.classList.remove("fade_left");
           login_cont.classList.add("fade_right");
           loader.style.display = "none";
@@ -64,7 +81,7 @@ function login() {
             window.location.href = "./article.html";
           });
         } else {
-          alert(json.status);
+          alert(json.msg);
           loader.style.display = "none";
         }
       }
@@ -105,3 +122,13 @@ window.onload = () => {
   update_width();
 };
 window.addEventListener("resize", update_width);
+
+function LoginCookieHandler(pjson) {
+  if (pjson.code == 2000) {
+    var d = new Date();
+    d.setTime(d.getTime() + 3 * 60 * 60 * 1000);
+    document.cookie = "username=" + pjson.data.username + "; expires=" + d.toGMTString() + "; path=/";
+    document.cookie = "login_token=" + pjson.data.login_token + "; expires=" + d.toGMTString() + "; path=/";
+    document.cookie = "admin_token=" + pjson.data.admin_token + "; expires=" + d.toGMTString() + "; path=/";
+  }
+}

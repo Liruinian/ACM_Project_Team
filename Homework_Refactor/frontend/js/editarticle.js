@@ -1,3 +1,13 @@
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+  }
+  return "";
+}
+
 var editor;
 $(function () {
   editor = editormd("article-editor", {
@@ -32,29 +42,50 @@ function newart() {
   };
   console.log(JSON.stringify(artform));
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("PUT", "http://8.130.53.145:8880/articles", true);
+  httpRequest.open("POST", "https://api.liruinian.top/article/create", true);
   httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send(JSON.stringify(artform));
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
       json = JSON.parse(json);
-      alert(json.status);
-      location.reload();
+      iziToast.show({
+        timeout: 2500,
+        icon: false,
+        title: "服务器返回值：",
+        message: json.msg,
+      });
+      setTimeout(function () {
+        location.reload();
+      }, 3000);
     }
   };
 }
 function delart() {
   var id = document.getElementById("edit_art_id").innerHTML;
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("DELETE", "http://8.130.53.145:8880/articles/" + id, true);
+  httpRequest.open("DELETE", "https://api.liruinian.top/article/delete/" + id, true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
       json = JSON.parse(json);
-      alert(json.status);
-      location.reload();
+      iziToast.show({
+        timeout: 2500,
+        icon: false,
+        title: "服务器返回值：",
+        message: json.msg,
+      });
+      setTimeout(function () {
+        location.reload();
+      }, 3000);
     }
   };
 }
@@ -69,7 +100,7 @@ function submit() {
   var content = editor.getMarkdown();
   var artform = {
     edit: true,
-    id: id,
+    id: parseInt(id),
     title: title,
     category: category,
     author: author,
@@ -78,17 +109,28 @@ function submit() {
     href: href,
     content: content,
   };
+
   console.log(JSON.stringify(artform));
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("PUT", "http://8.130.53.145:8880/articles", true);
+  httpRequest.open("POST", "https://api.liruinian.top/article/edit", true);
   httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send(JSON.stringify(artform));
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
       json = JSON.parse(json);
-      alert(json.status);
-      location.reload();
+      iziToast.show({
+        timeout: 2500,
+        icon: false,
+        title: "服务器返回值：",
+        message: json.msg,
+      });
+      setTimeout(function () {
+        location.reload();
+      }, 3000);
     }
   };
 }
@@ -96,43 +138,48 @@ function home() {
   window.location.href = "article.html";
 }
 function logout() {
-  var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/logout", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send();
-  httpRequest.onreadystatechange = function () {
-    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-      var json = httpRequest.responseText;
-      json = JSON.parse(json);
-      if (json.status != "success") {
-        alert(json.status);
-      } else {
-        window.location.href = "index.html";
-      }
-    }
-  };
+  document.cookie = "username=; expires=0; path=/";
+  document.cookie = "login_token=; expires=0; path=/";
+  document.cookie = "admin_token=; expires=0; path=/";
+  window.location.href = "index.html";
 }
 function load_articles() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("GET", "http://8.130.53.145:8880/articles", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  httpRequest.open("POST", "https://api.liruinian.top/article/list", true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var jsonart = httpRequest.responseText;
       jsonart = JSON.parse(jsonart);
-      if (jsonart.status != undefined) {
-        alert(jsonart.status);
+      if (jsonart.msg != "success") {
+        alert(jsonart.msg);
         window.location.href = "index.html";
       }
-      articles = JSON.parse(jsonart);
+      articles = jsonart.Articles;
       console.log(articles);
       articles.reverse();
       let searchol = document.getElementById("searchol");
       searchol.innerHTML = "";
 
+      let getart = getQueryString("art");
+      console.log(getart);
+      if (getart == null) {
+        document.getElementById("a_author_inp").value = username;
+        var today = new Date();
+        var DD = String(today.getDate()).padStart(2, "0");
+        var MM = String(today.getMonth() + 1).padStart(2, "0");
+        var yyyy = today.getFullYear();
+        hh = String(today.getHours()).padStart(2, "0");
+        mm = String(today.getMinutes()).padStart(2, "0");
+        ss = String(today.getSeconds()).padStart(2, "0");
+        today = yyyy + "-" + MM + "-" + DD + " " + hh + ":" + mm + ":" + ss;
+        document.getElementById("a_time_inp").value = today;
+      }
       for (art of articles) {
-        let getart = getQueryString("art");
         if (getart == art.id) {
           console.log(art.content);
           document.getElementById("edit_art_id").innerHTML = art.id;
@@ -166,38 +213,40 @@ function load_articles() {
     }
   };
 }
-
+var username;
 function user_classify() {
   // user admin 后端判断后返回到cookies
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("GET", "http://8.130.53.145:8880/userinfo", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  httpRequest.open("POST", "https://api.liruinian.top/user/info", true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      json = JSON.parse(json);
-      if (json.status != undefined) {
-        return;
-      }
       uInfo = JSON.parse(json);
-    }
-
-    let usrgroupE = document.getElementById("usrgroup_s");
-    let usernameE = document.getElementById("username_s");
-    usrgroupE.innerHTML = uInfo.usertype;
-    usernameE.innerHTML = uInfo.username;
-    if (usrgroupE.innerText != "admin") {
-      let admin_comp = document.getElementsByClassName("admin");
-      for (adm of admin_comp) {
-        adm.style.display = "none";
-      }
-    } else {
-      let admin_comp = document.getElementsByClassName("admin");
-      for (adm of admin_comp) {
-        adm.style.display = "block";
+      console.log(uInfo);
+      if (uInfo.msg == "success") {
+        username = uInfo.AForm[0].username;
+        let usrgroupE = document.getElementById("usrgroup_s");
+        let usernameE = document.getElementById("username_s");
+        usrgroupE.innerHTML = uInfo.AForm[0].usertype;
+        usernameE.innerHTML = username;
+        if (usrgroupE.innerText != "admin") {
+          let admin_comp = document.getElementsByClassName("admin");
+          for (adm of admin_comp) {
+            adm.style.display = "none";
+          }
+        } else {
+          let admin_comp = document.getElementsByClassName("admin");
+          for (adm of admin_comp) {
+            adm.style.display = "block";
+          }
+        }
       }
     }
   };

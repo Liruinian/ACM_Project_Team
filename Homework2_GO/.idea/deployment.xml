@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="8.130.53.145" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="8.130.53.145" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
+    <option name="confirmBeforeUploading" value="false" />
     <serverData>
       <paths name="8.130.53.145">
         <serverdata>
           <mappings>
-            <mapping deploy="/Desktop/GO_Remote" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/root/go/Homework2" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -4,35 +4,31 @@ import (
 	"database/sql"
 	"encoding/json"
 	"github.com/gookit/color"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"log"
-	"time"
 )
 
 var (
-	Dba *sql.DB
-	Dbl *sql.DB
+	Db *gorm.DB
 )
 
-func MysqlConn(DbName string) *sql.DB {
-	db, _ := sql.Open("mysql", "root:@a20040207@tcp(127.0.0.1:3306)/"+DbName)
-	db.SetConnMaxLifetime(100)
-	db.SetMaxIdleConns(10)
-	db.SetConnMaxLifetime(10 * time.Minute)
-	db.SetConnMaxIdleTime(10 * time.Minute)
-	if err := db.Ping(); err != nil {
-		log.Println(color.FgRed.Render("Open " + DbName + " Database Fail"))
+func DbConn() *gorm.DB {
+	dsn := "root:e89r245z@tcp(127.0.0.1:3306)/homework?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Println(color.FgRed.Render("Open homework Database Fail"))
 		return nil
 	}
-	log.Println(color.FgGreen.Render("Database " + DbName + " Connect Success"))
 	return db
 }
 
-func CheckIfExist(db *sql.DB, qKey int, qValue string) bool {
+func CheckIfExist(db *gorm.DB, qKey int, qValue string) bool {
 	// qKey 1:phone 2:email 3:username
 	if qKey > 3 {
 		return false
 	}
-	rows, err := db.Query("SELECT * FROM login")
+	rows := db.Select("* FROM ?", "login").Find("")
 	if err != nil {
 		log.Println(color.FgRed.Render(err.Error()))
 	}

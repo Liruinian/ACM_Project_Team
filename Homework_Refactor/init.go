@@ -1,35 +1,19 @@
 package main
 
 import (
-	"Homework_Refactor/logic"
+	"Homework_Refactor/conf"
+	"Homework_Refactor/service"
 	"Homework_Refactor/tools"
 	"github.com/gin-gonic/gin"
 	"github.com/gookit/color"
 	"github.com/unrolled/secure"
 	"log"
 	"net/http"
+	"time"
 )
 
-type Config struct {
-	Port    string
-	UseCors bool
-	Domain  string
-	UseTLS  bool
-	TLSPem  string
-	TLSKey  string
-	SSLHost string
-}
-
 var (
-	Conf = Config{
-		Port:    ":8880",                 // 网站访问端口
-		UseCors: true,                    // 是否允许跨域访问
-		Domain:  ".liruinian.top",        // setcookie 时使用的域名
-		UseTLS:  false,                   // 是否使用TLS加密（https）*使用加密需要填写以下字段
-		TLSPem:  "api.liruinian.top.pem", // pem路径
-		TLSKey:  "api.liruinian.top.key", // key路径
-		SSLHost: "api.liruinian.top",     // ssl证书生效的域名
-	}
+	Conf = conf.Conf
 )
 
 func Cors() gin.HandlerFunc {
@@ -72,7 +56,6 @@ func UserVerifyMiddleware() gin.HandlerFunc {
 
 		username := c.GetHeader("username")
 		token := c.GetHeader("authorization")
-		log.Println(username, token)
 		if tools.VerifyUser(username, token) {
 			log.Println("UserVerifyMiddleware: " + color.FgGreen.Render("允许用户名："+username+" 访问文章接口"))
 			c.Next()
@@ -85,34 +68,38 @@ func UserVerifyMiddleware() gin.HandlerFunc {
 	}
 }
 func main() {
-
-	tools.DB = tools.DbConn("root", "e89r245z", "127.0.0.1:3306", "homework")
 	r := gin.New()
 	r.Use(Cors())
 	if Conf.UseTLS {
 		r.Use(TlsHandler())
 	}
+	log.Println(time.Now().Format("2023-02-01"))
 	user := r.Group("/user")
 	{
-		user.POST("/login", logic.Login)
-		user.POST("/logout", logic.Logout)
-		user.POST("/register", logic.Signup)
+		user.POST("/login", service.Login)
+		user.POST("/logout", service.Logout)
+		user.POST("/register", service.Signup)
 
-		user.POST("/info", logic.GetUserInfo)
+		user.POST("/info", service.GetUserInfo)
+		user.POST("/edit-info", service.EditUserInfo)
 	}
 	article := r.Group("/article")
 	article.Use(UserVerifyMiddleware())
 	{
-		article.POST("/list", logic.GetArticles)
-		article.POST("/create", logic.CreateArticle)
-		article.DELETE("/delete/:id", logic.RemoveArticle)
+		article.POST("/list", service.GetArticles)
+		article.POST("/create", service.CreateArticle)
+		article.DELETE("/delete/:id", service.RemoveArticle)
 
-		article.POST("/edit", logic.EditArticle)
-		article.POST("/:id", logic.GetArticle) // 单行
-		article.POST("/comments/:id", logic.GetComments)
+		article.POST("/edit", service.EditArticle)
+		article.POST("/:id", service.GetArticle) // 单行
+
+		article.POST("/comments/:id", service.GetComments)
+		article.POST("/create-comment/:id", service.CreateComment)
+		article.POST("/like-comment/:id", service.ThumbUp)
+
 	}
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{"code": 200, "msg": "Welcome to api.liruinian.top!", "version": 0.1, "description": ""})
+		c.JSON(200, gin.H{"code": 200, "msg": "Welcome to api.liruinian.top!", "version": 0.1, "description": "check documentation"})
 	})
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(200, gin.H{"code": 404, "msg": "无此请求接口，请查阅api文档后再次尝试访问"})

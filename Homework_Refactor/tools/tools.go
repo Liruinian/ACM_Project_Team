@@ -1,11 +1,23 @@
 package tools
 
 import (
+	"Homework_Refactor/conf"
 	"github.com/gookit/color"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 	"log"
-	time2 "time"
+	"time"
 )
+
+var (
+	DB   *gorm.DB
+	Conf conf.Config
+)
+
+func init() {
+	DB = GetDB()
+	Conf = conf.Conf
+}
 
 func GetPwd(pwd string) ([]byte, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(pwd), bcrypt.DefaultCost)
@@ -23,19 +35,19 @@ func ComparePwd(pwd1 string, pwd2 string) bool {
 }
 
 func VerifyUserIfAdmin(username string, lToken string, aToken string) bool {
-	if VerifyToken(lToken, "user_token", username) && VerifyToken(aToken, "admin_token", username+" is admin") {
+	if VerifyUser(username, lToken) && VerifyToken(aToken, "admin_token", username+" is admin") {
 		return true
 	}
 	return false
 }
 func VerifyUser(username string, lToken string) bool {
-	if VerifyToken(lToken, "user_token", username) {
+	if VerifyToken(lToken, "user_token", username+time.Now().Format("2023-02-01")) {
 		return true
 	}
 	return false
 }
 func CreateToken(tokenName string, tokenCtx string) string {
-	token, err := JwtEncoder(tokenName, tokenCtx, int64(3*time2.Hour))
+	token, err := JwtEncoder(tokenName, tokenCtx, int64(3*time.Hour))
 	if err != nil {
 		log.Println(color.FgRed.Render("Create Token Failed! name:" + tokenName + " ctx:" + tokenCtx))
 		log.Println(color.FgRed.Render(err.Error()))

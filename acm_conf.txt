@@ -1,0 +1,11 @@
+#######################################################################
+#       OneinStack for CentOS/RedHat 7+ Debian 9+ and Ubuntu 16+      #
+#       For more information please visit https://oneinstack.com      #
+#######################################################################
+Your domain:                  acm.liruinian.top
+Virtualhost conf:             /usr/local/nginx/conf/vhost/acm.liruinian.top.conf
+Directory of:                 /data/wwwroot/acm.liruinian.top
+Rewrite rule:                 /usr/local/nginx/conf/rewrite/other.conf
+Self-signed SSL Certificate:  /usr/local/nginx/conf/ssl/acm.liruinian.top.crt
+SSL Private Key:              /usr/local/nginx/conf/ssl/acm.liruinian.top.key
+SSL CSR File:                 /usr/local/nginx/conf/ssl/acm.liruinian.top.csr

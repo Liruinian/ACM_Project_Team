@@ -7,9 +7,7 @@ html {
   padding: 0;
   color: white;
   background-size: cover;
-  background: url("../imgs/article_bg.jpg") no-repeat;
-  background-position: center center;
-  background-color: black;
+  background: black url("../imgs/article_bg.jpg") no-repeat center center;
   text-align: center;
   height: 100vh;
   overflow: hidden;
@@ -170,9 +168,8 @@ blockquote {
 }
 .search {
   margin: 0;
-  padding: 0;
   background-color: #3e3e3e;
-  padding-left: 10px;
+  padding: 0 0 0 10px;
   overflow-x: hidden;
   overflow-y: scroll;
 }

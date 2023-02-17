@@ -6,9 +6,7 @@ html {
   margin: 0;
   padding: 0;
   background-size: cover;
-  background: url("../imgs/bg.jpg") no-repeat;
-  background-position: center center;
-  background-color: black;
+  background: black url("../imgs/bg.jpg") no-repeat center center;
   text-align: center;
   height: 100vh;
   overflow: auto;
@@ -141,22 +139,17 @@ input::placeholder {
   color: red;
 }
 .error::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
   color: red;
 }
-.error:-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  color: red;
-}
-.error:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: red;
-}
+
 .loading {
   display: none;
+  padding: 5px;
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
 }
+
 .header {
   position: absolute;
   top: 0;
@@ -329,7 +322,7 @@ input:focus {
   color: #ec6e2d;
 }
 .footer {
-  width: 200px;
+  align-items: center;
   color: white;
   text-shadow: 0 1px 2px #999;
   font-size: 12px;

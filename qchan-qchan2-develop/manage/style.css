@@ -1,0 +1,458 @@
+@font-face {font-family: "iconfont";
+  src: url('fonts/iconfont.eot'); /* IE9*/
+  src: url('fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('fonts/iconfont.woff') format('woff'), /* chrome、firefox */
+  url('fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+/* Do some clean */
+* {
+	padding: 0;
+	margin: 0;
+	font-family: "文泉驿微米黑","微软雅黑",verdana, arial, helvetica, sans-serif;
+}
+article,aside,dialog,footer,header,section,footer,nav,figure,menu {display:block;}
+
+/* Page background-color */
+body {
+	background-color: #f8f8f8;
+}
+
+/* Fuck IE */
+img {
+	border: none;
+}
+
+button {
+	border: none;
+	padding: 0.5em;
+	min-width: 4em;
+	color: white;
+	font-size: 1.3em;
+	line-height: 100%;
+	background-color: #aaa;
+	user-select: none;
+}
+button:hover {
+	background-color: #888;
+}
+button:active {
+	background-color: #aaa;
+}
+button.affirmative {
+	background-color: cornflowerblue;
+}
+button.affirmative:hover {
+	background-color: royalblue;
+}
+button.affirmative:active {
+	background-color: cornflowerblue;
+}
+button.negative {
+	background-color: palevioletred;
+}
+button.negative:hover {
+	background-color: mediumvioletred;
+}
+button.negative:active {
+	background-color: palevioletred;
+}
+
+
+/*-*=*-*=*-*=*-*=*-*=*-*=*-*=*-*
+ *        Common Styles        *
+ *=*-*=*-*=*-*=*-*=*-*=*-*=*-*=*/
+/**********************
+ *       Header       *
+ **********************/
+#main_header {
+	background-color: mediumseagreen;
+	color:white;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 10000;
+	height: 5em;
+}
+#main_header div {
+	float: left;
+}
+#logo{
+	height: 5em;
+	width: 15em;
+	background-image: url(../../site-img/logo.png);
+	background-size: 100%;
+}
+#upload_button #close_mark {
+	display: none;
+}
+div#lang_sel {
+	float: right;
+	height: 1.5em;
+	padding: 1.75em;
+	text-align: center;
+}
+#lang_sel::before {
+	font-family:"iconfont";
+	content: "\e603";
+	font-size: 1.5em;
+}
+#lang_sel span {
+	font-size: 1.5em;
+}
+#lang_sel ul {
+	list-style: none;
+	position: absolute;
+	top: 5em;
+	right: 0;
+	display: none;
+	background-color: dodgerblue;
+	padding: 1em;
+	max-width: 20em;
+}
+#lang_sel ul li {
+	float: left;
+	padding: 0.5em;
+}
+#lang_sel ul li a:hover {
+	text-decoration: underline;
+}
+#lang_sel:hover {
+	background-color: dodgerblue;
+}
+#lang_sel:hover ul {
+	display: block;
+}
+
+#lang_sel ul li a {
+	color: white;
+	text-decoration: none;
+}
+
+#main {
+	padding: 1em;
+	position: absolute;
+	top: 5em;
+	left: 0;
+	right: 0;
+	bottom: 2.56em;
+	overflow: auto;
+	transition: bottom 0.2s ease-out;
+}
+#main.show {
+	bottom: 7.25em;
+}
+#first_load {
+	color: #aaa;
+	text-align: center;
+	display: -moz-box;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	-moz-box-orient: vertical;
+	font-size: 1.5em;
+	line-height: 120%;
+	width: 100%;
+}
+#first_load button{
+	font-size: 0.87em;
+}
+#login_form p {
+	margin-top: 0.2em;
+	color: #666;
+}
+#login_form input {
+	border: none;
+	border-bottom: 2px solid #aaa;
+	background-color: transparent;
+	width: 8em;
+	padding: 0.2em;
+	font-size: 1em;
+	color: #666;
+}
+
+#dirlist,#dirlist ul {
+	list-style:none;
+}
+#dirlist {
+	float: left;
+	overflow: auto;
+	top: 1em;
+	bottom: 1em;
+	position: absolute;
+	width: 8em;
+	vertical-align: top;
+	text-align: center;
+}
+#dirlist li.year {
+	width: 6em;
+	background-color: darkgray;
+	padding: 0.5em;
+	margin: 0.125em auto;
+	line-height: 150%;
+}
+#dirlist li.year:hover,#dirlist li.year.chosen {
+	background-color: palevioletred;
+}
+#dirlist li.month a {
+	text-decoration: none;
+	color: black;
+	display: block;
+	padding: 0.3125em;
+	margin: 0.125em;
+	background-color: lightgrey;
+	display: none
+}
+#dirlist li.month.chosen a,#dirlist li.month a:hover {
+	background-color:dodgerblue;
+	display:block;
+}
+#dirlist li.year:hover li.month a {
+	display:block;
+}
+
+/* Result Zone */
+#result_zone {
+	margin-left: 9em;
+	list-style: none;
+	background-repeat: no-repeat;
+	background-position: bottom right;
+}
+#result_zone li{
+	display: inline-block;
+	vertical-align: top;
+	margin: 5px;
+	position: relative;
+	background-image: url(images/transparent.png);
+	background-position: center center;
+	box-shadow: 5px 5px 5px 2px silver;
+	overflow: hidden;
+}
+#result_zone div.img {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	transition-property: background-position;
+	transition-timing-function: linear;
+}
+#result_zone div.name{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: none;
+}
+#result_zone div.infotag{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: none;
+	text-align: right;
+	font-size: 0.6em;
+	opacity: 0.7;
+}
+#result_zone li.long div.infotag,#result_zone li.tiny div.infotag {
+	display: block;
+}
+#result_zone div.infotag span {
+	display: none;
+	padding: 0 0.2em;
+	cursor: default;
+}
+#result_zone div.infotag span.longtag{
+	background-color: teal;
+	color: white;
+}
+#result_zone div.infotag span.tinytag{
+	background-color: brown;
+	color: white;
+}
+#result_zone li.long div.infotag span.longtag{
+	display: inline;
+}
+#result_zone li.tiny div.infotag span.tinytag{
+	display: inline;
+}
+
+#result_zone li:hover div.name{
+	display: block;
+}
+#result_zone div.name p{
+	background-color: black;
+	color: white;
+	opacity: 0.6;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 5px;
+}
+#result_zone div.select{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border: 5px solid slateblue;
+	display: none;
+}
+#result_zone .selected div.select{
+	display: block;
+}
+#result_zone div.select p{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	color: slateblue;
+	margin: -1px;
+	text-align: right;
+	font-size: 2em;
+	line-height: 100%;
+	font-family: iconfont;
+}
+#main_footer {
+	background-color: #666;
+	color:white;
+	position: fixed;
+	font-size: 0.875em;
+	height: 1.28em;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9998;
+	text-align: right;
+	padding: 0.8em;
+}
+#main_footer a {
+	color: powderblue;
+	text-decoration: none;
+}
+#main_footer a:hover {
+	text-decoration: underline;
+}
+
+#page_zone {
+	position: fixed;
+	top: 5em;
+	right: 1em;
+	background-color: #666;
+	padding: 0.625em;
+	color: white;
+	opacity: 0.8;
+}
+#page_zone:hover {
+	opacity: 1;
+}
+#page_zone button{
+	border: none;
+	padding: 0.625em;
+	color: white;
+	background-color: chocolate;
+}
+#page_zone select {
+	border: none;
+	width: 3.125em;
+	height: 1.25em;
+	color: white;
+	background-color: chocolate;
+}
+#page_select {
+	font-size: 1.2em;
+}
+
+#info_zone {
+	padding: 0.625em;
+	height: 6em;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	background-color: slateblue;
+	color: white;
+	transition: height 0.2s ease-out, padding 0.2s ease-out;
+}
+#info_zone h1 {
+	font-size: 2em;
+	margin: 0.15em 0;
+}
+#info_zone p {
+	margin: 0.3em 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+#info_zone.hide {
+	padding: 0 0.625em;
+	height: 0;
+}
+
+/*-*=*-*=*-*=*-*=*-*=*-*=*-*=*-*
+ *   Style for phone and pad   *
+ *=*-*=*-*=*-*=*-*=*-*=*-*=*-*=*/
+/* Style for phone and pad */
+@media screen and (max-width: 960px) {
+/**********************
+ *       Header       *
+ **********************/
+.hide_mobile {
+	display:none;
+}
+#main_header {
+	height: 3em;
+	position: absolute;
+}
+#main_header div {
+	height: 3em;
+}
+#logo{
+	height: 3em;
+	width: 9em;
+	background-image: url(../../site-img/logo_m.png);
+}
+div#lang_sel {
+	height: 1.5em;
+	padding: 0.75em 0.25em;
+}
+#lang_sel ul {
+	max-width: none;
+	left: 0;
+	top: 3em;
+	padding: 0;
+}
+#lang_sel ul li {
+	float: none;
+	padding: 0;
+	border-bottom: 1px solid #ddd;
+	font-size: 1.2em;
+	line-height: 120%;
+}
+#lang_sel ul li a {
+	padding: 0.6em 0;
+	display: block;
+	width: 100%;
+}
+#lang_sel ul li a:hover {
+		text-decoration: none;
+	}
+
+#main {
+	top: 3em;
+	bottom: 2.56em;
+}
+#result_zone {
+	text-align: center;
+}
+
+}

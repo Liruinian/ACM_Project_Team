@@ -2,8 +2,8 @@ package service
 
 import (
 	"Homework_Refactor/tools"
-	json2 "encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
 	"github.com/gookit/color"
 	"log"
 )
@@ -34,12 +34,12 @@ func GetArticles(c *gin.Context) {
 		Articles: &aList,
 	}
 
-	json, err := json2.Marshal(status)
+	jsonR, err := json.Marshal(status)
 
 	if err != nil {
 		return
 	}
-	c.String(200, string(json))
+	c.String(200, string(jsonR))
 }
 
 func GetArticle(c *gin.Context) {
@@ -57,12 +57,12 @@ func GetArticle(c *gin.Context) {
 		AForm: &aList,
 	}
 
-	json, err := json2.Marshal(status)
+	jsonR, err := json.Marshal(status)
 
 	if err != nil {
 		return
 	}
-	c.String(200, string(json))
+	c.String(200, string(jsonR))
 }
 
 func CreateArticle(c *gin.Context) {

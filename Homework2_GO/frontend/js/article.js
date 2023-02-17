@@ -1,14 +1,14 @@
 function logout() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/logout", true);
+  httpRequest.open("POST", "http://8.130.53.145:8880/user/logout", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
       json = JSON.parse(json);
-      if (json.status != "success") {
-        alert(json.status);
+      if (json.msg != "success") {
+        alert(json.msg);
       } else {
         window.location.href = "index.html";
       }
@@ -44,8 +44,8 @@ function search_inp() {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var return_data = httpRequest.responseText;
         return_data = JSON.parse(return_data);
-        if (return_data.status == "Not Found") {
-          alert(return_data.status);
+        if (return_data.msg == "Not Found") {
+          alert(return_data.msg);
         } else {
           search_load(return_data);
         }
@@ -149,14 +149,14 @@ function user_classify() {
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("GET", "http://8.130.53.145:8880/userinfo", true);
+  httpRequest.open("GET", "http://8.130.53.145:8880/user/info", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
       json = JSON.parse(json);
-      if (json.status != undefined) {
+      if (json.msg != undefined) {
         return;
       }
       uInfo = JSON.parse(json);

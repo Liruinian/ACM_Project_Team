@@ -2,11 +2,12 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta http-equiv="x-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <!-- 显示图标用css Font Awesome 4.7.0 by @davegandy -->
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css" />
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="css/iziToast.min.css" />
+    <script type="text/javascript" src="js/iziToast.min.js"></script>
     <script src="./js/login.js" type="text/javascript"></script>
     <title>Login - PRTS</title>
   </head>
@@ -52,13 +53,15 @@
             </div>
           </div>
           <div class="notetext">登录即代表同意《PRTS协议》《隐私保护指引》</div>
-          <div class="notetext">Deploy version: Alpha 0.1</div>
         </div>
       </div>
-      <div class="loading" id="loading">Loading...</div>
+
+      <div class="loading" id="loading"><img src="./imgs/loading@3x.gif" width="30px" /><br />loading...</div>
+
       <div class="footer">
-        <p>Northeast Agriculture University</p>
-        <p>电气2204 李睿年 2023.1.19</p>
+        <p>Deploy version: Beta 1.0</p>
+        <p>东北农业大学 电气2204 李睿年 2023.2.14</p>
+        <a href="https://beian.miit.gov.cn/" target="_blank">黑ICP备2023001389号</a>
       </div>
     </div>
   </body>

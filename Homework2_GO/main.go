@@ -8,11 +8,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+	time2 "time"
 )
 
 type Config struct {
 	Port    string
 	UseCors bool
+	Domain  string
 	UseTLS  bool
 	TLSPem  string
 	TLSKey  string
@@ -22,7 +24,8 @@ type Config struct {
 var Conf = Config{
 	Port:    ":8880", // 网站访问端口
 	UseCors: true,    // 是否允许跨域访问
-	UseTLS:  false,   //是否使用TLS加密（https）*使用加密需要填写以下字段
+	Domain:  "api.liruinian.top",
+	UseTLS:  false, //是否使用TLS加密（https）*使用加密需要填写以下字段
 	TLSPem:  "api.liruinian.top.pem",
 	TLSKey:  "api.liruinian.top.key",
 	SSLHost: "api.liruinian.top:8880",
@@ -54,8 +57,6 @@ func TlsHandler() gin.HandlerFunc {
 			SSLHost:     Conf.SSLHost,
 		})
 		err := secureMiddleware.Process(c.Writer, c.Request)
-
-		// If there was an error, do not continue.
 		if err != nil {
 			return
 		}
@@ -63,32 +64,47 @@ func TlsHandler() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
+func UserVerifyMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		username, err := c.Cookie("username")
+		token, err := c.Cookie("login_token")
+		if err != nil {
+			return
+		}
+		if VerifyToken(token, "usertoken", username) {
+			c.Set("username", username)
+			c.Next()
+		} else {
+			c.JSON(200, gin.H{"code": 201, "msg": "访问受限，请重新登录后再进行操作"})
+			c.Abort()
+			return
+		}
+	}
+}
 func main() {
-
 	r := gin.New()
 	r.Use(Cors())
 	if Conf.UseTLS {
 		r.Use(TlsHandler())
 	}
 
-	Dba = MysqlConn("articles")
-	Dbl = MysqlConn("login")
+	Db = DbConn()
+	user := r.Group("/user")
+	{
+		user.POST("/login", Login)
+		user.POST("/logout", Logout)
+		user.POST("/register", Signup)
+		user.POST("/userinfo", GetUserInfo)
+	}
+	article := r.Group("/article")
+	article.Use(UserVerifyMiddleware())
+	{
+		article.POST("/list", GetArticles)
+		article.POST("/create", UploadArticle)
+		article.DELETE("/delete", RemoveArticle)
 
-	Login(r)
-	Signup(r)
-	GetIdentity(r)
-	Logout(r)
-	GetArticles(r)
-	GetArticle(r)
-	GetArticleList(r)
-	UploadArticle(r)
-	RemoveArticle(r)
-	SearchArticle(r)
-
-	r.GET("/hello", func(c *gin.Context) {
-		c.JSON(200, gin.H{"msg": "hello,gin"})
-	})
+		article.POST("/:id", GetArticle)
+	}
 
 	if Conf.UseTLS {
 		err := r.RunTLS(Conf.Port, Conf.TLSPem, Conf.TLSKey)
@@ -103,13 +119,11 @@ func main() {
 	}
 }
 
-// GetPwd 给密码加密
 func GetPwd(pwd string) ([]byte, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(pwd), bcrypt.DefaultCost)
 	return hash, err
 }
 
-// ComparePwd 比对密码
 func ComparePwd(pwd1 string, pwd2 string) bool {
 	// Returns true on success, pwd1 is for the database.
 	err := bcrypt.CompareHashAndPassword([]byte(pwd1), []byte(pwd2))
@@ -118,4 +132,45 @@ func ComparePwd(pwd1 string, pwd2 string) bool {
 	} else {
 		return true
 	}
+}
+
+func GrantPermission(username string, isAdmin bool, c *gin.Context) {
+	c.SetCookie("username", username, int(3*time2.Hour), "/", Conf.Domain, true, false)
+	c.SetCookie("login_token", CreateToken("usertoken", username), int(3*time2.Hour), "/", Conf.Domain, true, false)
+	if isAdmin == true {
+		c.SetCookie("admin_token", CreateToken("admintoken", username), int(3*time2.Hour), "/", Conf.Domain, true, false)
+	}
+}
+
+func VerifyUserIfAdmin(username string, lToken string, aToken string) bool {
+	if VerifyToken(lToken, "usertoken", username) && VerifyToken(aToken, "admintoken", username+" is admin") {
+		return true
+	}
+	return false
+}
+
+func CreateToken(tokenName string, tokenCtx string) string {
+	token, err := JwtEncoder(tokenName, tokenCtx, int64(3*time2.Hour))
+	if err != nil {
+		log.Println("Create Token Failed! name:" + tokenName + " ctx:" + tokenCtx)
+		return ""
+	}
+	return token
+}
+
+func VerifyToken(token string, tokenName string, tokenCtx string) bool {
+	name, ctx, err := JwtDecoder(token)
+	if err != nil {
+		log.Println("Verify Token Failed! Decoder Error!")
+		return false
+	}
+	if name != tokenName {
+		log.Println("Verify Token Failed! name Not Valid!")
+	} else {
+		if ctx == tokenCtx {
+			return true
+		}
+	}
+
+	return false
 }

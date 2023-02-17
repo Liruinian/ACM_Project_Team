@@ -48,7 +48,7 @@ function login() {
     };
     console.log(JSON.stringify(loginform));
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open("POST", "http://8.130.53.145:8880/login", true);
+    httpRequest.open("POST", "http://8.130.53.145:8880/user/login", true);
     httpRequest.setRequestHeader("Content-type", "application/raw");
     httpRequest.send(JSON.stringify(loginform));
 
@@ -56,7 +56,7 @@ function login() {
       if (httpRequest.readyState == 4 && httpRequest.status == 200) {
         var json = httpRequest.responseText;
         json = JSON.parse(json);
-        if (json.status == "success") {
+        if (json.msg == "success") {
           login_cont.classList.remove("fade_left");
           login_cont.classList.add("fade_right");
           loader.style.display = "none";
@@ -64,7 +64,7 @@ function login() {
             window.location.href = "./article.html";
           });
         } else {
-          alert(json.status);
+          alert(json.msg);
           loader.style.display = "none";
         }
       }

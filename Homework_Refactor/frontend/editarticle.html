@@ -2,11 +2,13 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="x-UA-Compatibe" content="IE=edge" />
+    <meta http-equiv="x-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" href="./css/font-awesome.min.css" />
     <link rel="stylesheet" href="./css/editarticle.css" />
     <link rel="stylesheet" href="./css/editormd.css" />
+    <link rel="stylesheet" href="css/iziToast.min.css" />
+    <script type="text/javascript" src="js/iziToast.min.js"></script>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/editormd.js"></script>
     <script src="./js/editarticle.js"></script>
@@ -34,8 +36,8 @@
         <input type="text" id="a_title_inp" placeholder="文章标题" />
         <input type="text" id="a_category_inp" placeholder="类别" />
         <input type="text" id="a_author_inp" placeholder="作者" />
-        <input type="text" id="a_time_inp" placeholder="时间" />
-        <input type="text" id="a_views_inp" placeholder="浏览量(wip)" />
+        <input type="datetime-local" id="a_time_inp" placeholder="时间" />
+        <input type="text" id="a_views_inp" placeholder="浏览量" />
         <input type="text" id="a_href_inp" placeholder="链接" />
 
         <div id="article-editor" class="edit_container">
@@ -48,7 +50,7 @@
 编辑完成选择提交修改即可提交
 ##新建文章
 点击新建文章选项进行新建
-**注意！登录有效期为1小时，过时将会返回登录页面丢失数据！**
+**注意！登录有效期为一天（每日凌晨0时刷新token），过时将会返回登录页面丢失数据！**
 </textarea
           >
         </div>

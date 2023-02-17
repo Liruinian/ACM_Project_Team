@@ -1,19 +1,18 @@
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+  }
+  return "";
+}
+
 function logout() {
-  var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", "http://8.130.53.145:8880/logout", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send();
-  httpRequest.onreadystatechange = function () {
-    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-      var json = httpRequest.responseText;
-      json = JSON.parse(json);
-      if (json.status != "success") {
-        alert(json.status);
-      } else {
-        window.location.href = "index.html";
-      }
-    }
-  };
+  document.cookie = "username=; expires=0; path=/";
+  document.cookie = "login_token=; expires=0; path=/";
+  document.cookie = "admin_token=; expires=0; path=/";
+  window.location.href = "index.html";
 }
 function change() {
   window.location.href = "editarticle.html";
@@ -35,25 +34,33 @@ function search() {
   }
 }
 function search_inp() {
-  si = document.getElementById("search_inp");
-  if (si.value != "") {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", "http://8.130.53.145:8880/search-articles?text=" + si.value, true);
-    httpRequest.send();
-    httpRequest.onreadystatechange = function () {
-      if (httpRequest.readyState == 4 && httpRequest.status == 200) {
-        var return_data = httpRequest.responseText;
-        return_data = JSON.parse(return_data);
-        if (return_data.status == "Not Found") {
-          alert(return_data.status);
-        } else {
-          search_load(return_data);
-        }
-      }
-    };
-  } else {
-    search_load(articles);
+  var keyWord = document.getElementById("search_inp").value;
+  list = articles;
+  var arr = [];
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].title.indexOf(keyWord) >= 0) {
+      arr.push(list[i]);
+    }
   }
+
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].content.indexOf(keyWord) >= 0) {
+      if (arr.length != 0) {
+        for (var j = 0; j < arr.length; j++) {
+          if (arr[j].id == list[i].id) {
+            break;
+          }
+          if (j == arr.length - 1) {
+            arr.push(list[i]);
+          }
+        }
+      } else {
+        arr.push(list[i]);
+      }
+    }
+  }
+
+  search_load(arr);
 }
 
 function search_load(articles) {
@@ -76,19 +83,22 @@ var articles = "";
 
 function load_articles() {
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("GET", "http://8.130.53.145:8880/articles", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  httpRequest.open("POST", "https://api.liruinian.top/article/list", true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var jsonart = httpRequest.responseText;
       jsonart = JSON.parse(jsonart);
-      if (jsonart.status != undefined) {
-        alert(jsonart.status);
+      if (jsonart.msg != "success") {
+        alert(jsonart.msg);
         window.location.href = "index.html";
         return;
       }
-      articles = JSON.parse(jsonart);
+      articles = jsonart.Articles;
       console.log(articles);
       articles.reverse();
       let i = articles.length + 1;
@@ -105,6 +115,7 @@ function load_articles() {
         let a_content = document.createElement("div");
         let a_information = document.createElement("div");
         let a_categ_cont = document.createElement("div");
+        let comment_cont = document.createElement("div");
 
         article_cont.classList.add("article_container");
         a_title.classList.add("a_title");
@@ -112,10 +123,21 @@ function load_articles() {
         a_content.classList.add("a_content");
         a_information.classList.add("a_information");
         a_categ_cont.classList.add("a_categ_cont");
+        comment_cont.classList.add("comment_container");
+
+        comment_cont.innerHTML +=
+          `        <div class="leave_comment">
+        <textarea class="comment_inp" id="comment_inp_` +
+          art.id +
+          `" type="text" placeholder="留个评论吧~"></textarea>
+        <div class="comment_sub" onclick="comment(` +
+          art.id +
+          `)" >提交</div>
+      </div>`;
         article_cont.id = art.title;
         a_title.innerHTML = art.title;
         a_category.innerHTML = " <span class='b_text'>No. " + art.id + " </span>" + art.category;
-        a_content.innerHTML = marked(art.content).replace(/\n/g, "<br />");
+        a_content.innerHTML = marked(art.content).replace("\n", "<br />");
         a_information.innerHTML =
           `
     <div class="a_i_item" id="a_author"><i class="fa fa-user"> 作者：` + art.author;
@@ -128,15 +150,18 @@ function load_articles() {
         art_href.target = "_blank";
 
         a_categ_cont.appendChild(a_category);
-        article_cont.appendChild(a_categ_cont);
-        article_cont.appendChild(a_title);
-        article_cont.appendChild(a_content);
-        article_cont.appendChild(a_information);
-        art_href.appendChild(article_cont);
-        page_cont.appendChild(art_href);
+        art_href.appendChild(a_categ_cont);
+        art_href.appendChild(a_title);
+        art_href.appendChild(a_content);
+        art_href.appendChild(a_information);
+        article_cont.appendChild(art_href);
+        article_cont.appendChild(comment_cont);
+        //Here
+        article_cont.onmouseover = getComment(art.id, comment_cont);
+        page_cont.appendChild(article_cont);
         a_categ_cont.innerHTML +=
           `
-  <div class="a_time" id="a_time"><i class="fa fa-clock-o"></i>&nbsp` + art.time;
+  <div class="a_time" id="a_time"><i class="fa fa-clock-o"></i>&nbsp` + art.time.replace("T", " ");
         +`</div>`;
       }
       search_load(articles);
@@ -144,37 +169,55 @@ function load_articles() {
   };
 }
 
+var username;
 function user_classify() {
   // user admin 后端判断后返回到cookies
 
   let uInfo = "";
   var httpRequest = new XMLHttpRequest();
-  httpRequest.open("GET", "http://8.130.53.145:8880/userinfo", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  httpRequest.open("POST", "https://api.liruinian.top/user/info", true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
   httpRequest.send();
   httpRequest.onreadystatechange = function () {
     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
       var json = httpRequest.responseText;
-      json = JSON.parse(json);
-      if (json.status != undefined) {
-        return;
-      }
       uInfo = JSON.parse(json);
-    }
+      console.log(uInfo);
+      if (uInfo.msg == "success") {
+        username = uInfo.AForm[0].username;
+        let usrgroupE = document.getElementById("usrgroup_s");
+        let usernameE = document.getElementById("username_s");
+        usrgroupE.innerHTML = uInfo.AForm[0].usertype;
+        usernameE.innerHTML = username;
+        if (usrgroupE.innerText != "admin") {
+          let admin_comp = document.getElementsByClassName("admin");
+          for (adm of admin_comp) {
+            adm.style.display = "none";
+          }
+        } else {
+          let admin_comp = document.getElementsByClassName("admin");
+          for (adm of admin_comp) {
+            adm.style.display = "block";
+          }
+        }
 
-    let usrgroupE = document.getElementById("usrgroup_s");
-    let usernameE = document.getElementById("username_s");
-    usrgroupE.innerHTML = uInfo.usertype;
-    usernameE.innerHTML = uInfo.username;
-    if (usrgroupE.innerText != "admin") {
-      let admin_comp = document.getElementsByClassName("admin");
-      for (adm of admin_comp) {
-        adm.style.display = "none";
-      }
-    } else {
-      let admin_comp = document.getElementsByClassName("admin");
-      for (adm of admin_comp) {
-        adm.style.display = "block";
+        document.getElementById("loading-box").classList.add("loaded");
+
+        setTimeout(function () {
+          document.getElementById("logo-center").style.display = "none";
+          document.getElementById("logo").classList.add("logo_animate");
+          document.getElementById("menu").classList.add("menu_animate");
+          document.getElementById("page_container").classList.add("page_animate");
+        }, 200);
+        iziToast.show({
+          timeout: 2500,
+          icon: false,
+          title: "欢迎回家！" + username,
+          message: "成功登入PRTS信息整合终端",
+        });
       }
     }
   };
@@ -210,3 +253,138 @@ window.onload = () => {
   user_classify();
 };
 window.addEventListener("resize", update_width);
+
+function getComment(id, comment_cont) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.open("POST", "https://api.liruinian.top/article/comments/" + id, true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
+  httpRequest.send();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+      var return_data = httpRequest.responseText;
+      return_data = JSON.parse(return_data);
+      if (return_data.msg == "success") {
+        if (return_data.Comments != null) {
+          for (com of return_data.Comments) {
+            comment_cont.innerHTML +=
+              `
+          <div class="a_comment">
+            <div class="avatar"><i class="fa fa-2x fa-user-circle"></i></div>
+            <div class="comment_text">
+              <div class="comment_title">
+                <div class="c_user">` +
+              com.user +
+              `</div><div>cid:</div><div id="commentid">` +
+              com.id +
+              `</div>
+                <div class="comment_like" onclick="likecomment(` +
+              com.id +
+              `,` +
+              com.thumbUp +
+              `)"><i class="fa fa-thumbs-up"> </i><span id="comment_like_` +
+              com.id +
+              `">` +
+              com.thumbUp +
+              `</span></div>
+              </div>
+              <div class="c_content">` +
+              com.commentText +
+              `</div><div class="a_comment_time">` +
+              com.time.replace("T", " ") +
+              `</div>
+              <hr />
+            </div>
+          </div>`;
+          }
+        }
+      } else {
+        alert(return_data.msg);
+        window.location = "index.html";
+      }
+    }
+  };
+}
+
+function timestampToTime(times) {
+  let time = times[1];
+  let mdy = times[0];
+  mdy = mdy.split("/");
+  let month = parseInt(mdy[0]);
+  let day = parseInt(mdy[1]);
+  let year = parseInt(mdy[2]);
+  return year + "-" + month + "-" + day + "T" + time;
+}
+
+function comment(id) {
+  var inp = document.getElementById("comment_inp_" + id);
+  var commentText = inp.value;
+  let time = new Date();
+  let nowTime = timestampToTime(time.toLocaleString("en-US", { hour12: false }).split(" "));
+
+  var SendData = {
+    commentText: commentText,
+    time: nowTime,
+  };
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.open("POST", "https://api.liruinian.top/article/create-comment/" + id, true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
+  httpRequest.send(JSON.stringify(SendData));
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+      var return_data = httpRequest.responseText;
+      return_data = JSON.parse(return_data);
+      console.log(return_data);
+      if (return_data.msg == "success") {
+        iziToast.show({
+          timeout: 2500,
+          icon: false,
+          title: "评论创建成功！",
+          message: commentText,
+        });
+        setTimeout(function () {
+          window.location.reload();
+        }, 2500);
+      } else {
+        alert(return_data.msg);
+        window.location = "index.html";
+      }
+    }
+  };
+}
+
+function likecomment(id, thumpUp) {
+  var c_like = document.getElementById("comment_like_" + id);
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.open("POST", "https://api.liruinian.top/article/like-comment/" + id, true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
+  httpRequest.send();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+      var return_data = httpRequest.responseText;
+      return_data = JSON.parse(return_data);
+      console.log(return_data);
+      if (return_data.msg == "success") {
+        iziToast.show({
+          timeout: 2500,
+          icon: false,
+          title: "点赞评论成功！",
+          message: "当前评论赞数：" + String(parseInt(c_like.innerHTML) + 1),
+        });
+
+        c_like.innerHTML = String(parseInt(c_like.innerHTML) + 1);
+      } else {
+        alert(return_data.msg);
+        window.location = "index.html";
+      }
+    }
+  };
+}

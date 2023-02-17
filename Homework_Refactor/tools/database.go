@@ -1,4 +1,4 @@
-package database
+package tools
 
 import (
 	"github.com/gookit/color"
@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-var DB *gorm.DB
+var _db *gorm.DB
 
 type Articles struct {
 	ID       int    `gorm:"primaryKey;column:id" json:"id"`
@@ -27,6 +27,14 @@ type Login struct {
 	Password string `gorm:"column:password" json:"password"`
 	Usertype string `gorm:"column:usertype" json:"usertype"`
 }
+type LoginNoPassword struct {
+	ID       int    `gorm:"primaryKey;column:id" json:"id"`
+	Phone    string `gorm:"column:phone" json:"phone"`
+	Email    string `gorm:"column:email" json:"email"`
+	Username string `gorm:"column:username" json:"username"`
+	Password string `gorm:"column:password" json:"-"`
+	Usertype string `gorm:"column:usertype" json:"usertype"`
+}
 type Comment struct {
 	ID          int    `gorm:"primaryKey;column:id" json:"id"`
 	ArticleID   int    `gorm:"column:article_id" json:"articleId"`
@@ -36,19 +44,28 @@ type Comment struct {
 	ThumbUp     int    `gorm:"column:thumb_up" json:"thumbUp"`
 }
 
-func DbConn(DBUsername, DBPassword, DBLocation, schemaName string) *gorm.DB {
+func init() {
+	var (
+		err        error
+		DBUsername = "root"
+		DBPassword = "e89r245z"
+		DBLocation = "127.0.0.1:3306"
+		schemaName = "homework"
+	)
 	dsn := DBUsername + ":" + DBPassword + "@tcp(" + DBLocation + ")/" + schemaName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	_db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println(color.FgRed.Render("在尝试打开 " + schemaName + "架构时出现错误:"))
 		log.Println(color.FgRed.Render(err.Error()))
-		return nil
 	}
 	log.Println(color.FgGreen.Render("成功与数据库" + schemaName + "建立连接"))
-	sqlDB, _ := db.DB()
+	sqlDB, _ := _db.DB()
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetMaxIdleConns(20)
-	return db
+}
+
+func GetDB() *gorm.DB {
+	return _db
 }
 
 func CheckIfExist(db *gorm.DB, qKey int, qValue string) bool {

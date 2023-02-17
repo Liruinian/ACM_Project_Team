@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gookit/color"
@@ -37,278 +36,176 @@ type ArticleForm struct {
 	Href     string `json:"href"`
 }
 
-func Signup(ginServer *gin.Engine) {
-	ginServer.POST("/signup", func(context *gin.Context) {
-		ip := context.ClientIP()
-		var sForm SignupForm
-		err := context.ShouldBindJSON(&sForm)
-		if err != nil {
-			log.Println(ip + " User Signup Failed: Wrong JSON Format " + err.Error())
-			context.JSON(200, gin.H{"status": "输入格式不正确"})
-			return
-		}
-		sForm.Usertype = "user"
-		if sForm.Username == "" || sForm.Email == "" || sForm.Phone == "" || sForm.Pass == "" {
-			context.JSON(200, gin.H{"status": "注册部分不能有空值"})
-			return
-		}
-		if CheckIfExist(Dbl, 1, sForm.Phone) || CheckIfExist(Dbl, 2, sForm.Email) || CheckIfExist(Dbl, 3, sForm.Username) {
-			log.Println(ip + " User Signup Failed: Existed phone or email")
-			context.JSON(200, gin.H{"status": "注册失败：用户已存在 请尝试更改邮箱、手机号或用户名"})
-			return
-		}
-		encrypted, _ := GetPwd(sForm.Pass)
-		sForm.Pass = string(encrypted)
-
-		result, err := Dbl.Exec("INSERT INTO login(phone,email,username,password,usertype) VALUES (?,?,?,?,?)", sForm.Phone, sForm.Email, sForm.Username, sForm.Pass, sForm.Usertype)
-		id, err := result.LastInsertId()
-		if err != nil {
-			log.Println(color.FgRed.Render(err.Error()))
-		}
-		log.Println(color.FgGreen.Render(ip + " User Signup Success"))
-		fmt.Printf("Successfully Registered with ID: %d\n", id)
-		context.JSON(200, gin.H{"status": "success"})
+func Signup(c *gin.Context) {
+	ip := c.ClientIP()
+	var sForm SignupForm
+	err := c.ShouldBindJSON(&sForm)
+	if err != nil {
+		log.Println(ip + " User Signup Failed: Wrong JSON Format " + err.Error())
+		c.JSON(200, gin.H{"status": "输入格式不正确"})
 		return
-	})
-}
+	}
+	sForm.Usertype = "user"
+	if sForm.Username == "" || sForm.Email == "" || sForm.Phone == "" || sForm.Pass == "" {
+		c.JSON(200, gin.H{"status": "注册部分不能有空值"})
+		return
+	}
+	if CheckIfExist(Db, 1, sForm.Phone) || CheckIfExist(Db, 2, sForm.Email) || CheckIfExist(Dbl, 3, sForm.Username) {
+		log.Println(ip + " User Signup Failed: Existed phone or email")
+		c.JSON(200, gin.H{"status": "注册失败：用户已存在 请尝试更改邮箱、手机号或用户名"})
+		return
+	}
+	encrypted, _ := GetPwd(sForm.Pass)
+	sForm.Pass = string(encrypted)
 
-func Login(ginServer *gin.Engine) {
-	ginServer.POST("/login", func(context *gin.Context) {
-		ip := context.ClientIP()
-		var lForm LoginForm
-		var sqlStr, username, password, usertype string
-		err := context.ShouldBindJSON(&lForm)
-		if err != nil {
-			log.Println(context.ClientIP() + " User Login Failed: Wrong JSON Format " + err.Error())
-			context.JSON(200, gin.H{"status": "输入格式不正确"})
-			return
-		}
-		if lForm.Usr == "" || lForm.Pass == "" {
-			context.JSON(200, gin.H{"status": "用户名或密码不能为空"})
-			return
-		}
-		if lForm.LoginType == 1 {
-			// Use phone
-			sqlStr = "SELECT username,password,usertype FROM login WHERE phone=?"
-
-		} else {
-			// Use Email
-			sqlStr = "SELECT username,password,usertype FROM login WHERE email=?"
-
-		}
-
-		rows := Dbl.QueryRow(sqlStr, lForm.Usr)
-		err = rows.Scan(&username, &password, &usertype)
-		if err != nil {
-			log.Println(ip + " User Login Failed " + err.Error())
-			context.JSON(200, gin.H{"status": "登录失败：请检查用户名或密码是否正确"})
-			return
-		}
-
-		if ComparePwd(password, lForm.Pass) {
-			grantPermission(ip, username, usertype)
-			log.Printf(color.FgGreen.Render(ip + " Successfully Logged in with username: " + username))
-			context.JSON(200, gin.H{"status": "success"})
-			return
-		} else {
-			log.Println(ip + " User Login Failed")
-			context.JSON(200, gin.H{"status": "登录失败：请检查用户名或密码是否正确"})
-			return
-		}
-
-	})
-}
-func Logout(ginServer *gin.Engine) {
-	ginServer.POST("/logout", func(context *gin.Context) {
-		ip := context.ClientIP()
-		_, err := Dbl.Exec("DELETE FROM currentlogins WHERE ip LIKE ?", ip)
-		if err != nil {
-			context.JSON(200, gin.H{"status": "Logout Failed"})
-			log.Println(color.FgRed.Render(err.Error()))
-		}
-		log.Println(ip + " User Logout")
-		context.JSON(200, gin.H{"status": "success"})
-	})
-}
-func GetIdentity(ginServer *gin.Engine) {
-	ginServer.GET("/userinfo", func(context *gin.Context) {
-		ip := context.ClientIP()
-		if IsPermitted(ip, false) {
-			var uInfo UserInfo
-			rows := Dbl.QueryRow("SELECT username,usertype,expiretime FROM currentlogins WHERE ip=?", ip)
-			err := rows.Scan(&uInfo.Username, &uInfo.Usertype, &uInfo.ExpireTime)
-			if err != nil {
-				log.Println(color.FgRed.Render(err.Error()))
-			}
-			bJson, _ := json.Marshal(uInfo)
-			log.Println(ip + " User Get Identity: " + string(bJson))
-			context.JSON(200, string(bJson))
-		} else {
-			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
-		}
-	})
-}
-func GetArticles(ginServer *gin.Engine) {
-	ginServer.GET("/articles", func(context *gin.Context) {
-		ip := context.ClientIP()
-		if IsPermitted(ip, false) {
-			art, err := getJSON(Dba, "SELECT * FROM articles")
-			if err != nil {
-				context.JSON(200, gin.H{"status": "获取文章失败，请稍后重试"})
-				return
-			}
-			log.Println(ip + " User Get Articles")
-			context.JSON(200, art)
-		} else {
-			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
-		}
-	})
-}
-func GetArticleList(ginServer *gin.Engine) {
-	ginServer.GET("/article-list", func(context *gin.Context) {
-		ip := context.ClientIP()
-		if IsPermitted(ip, false) {
-			art, err := getJSON(Dba, "SELECT id, title FROM articles")
-			if err != nil {
-				context.JSON(200, gin.H{"status": "获取文章失败，请稍后重试"})
-				return
-			}
-			log.Println(ip + " User Get Article List")
-			context.JSON(200, art)
-		} else {
-			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
-		}
-	})
-}
-func GetArticle(ginServer *gin.Engine) {
-	ginServer.GET("/articles/:id", func(context *gin.Context) {
-		ip := context.ClientIP()
-		if IsPermitted(ip, false) {
-			id := context.Param("id")
-			sqlStr := "SELECT * FROM articles WHERE id = " + id + ";"
-			art, err := getJSON(Dba, sqlStr)
-			if err != nil {
-				context.JSON(200, gin.H{"status": "获取文章失败，请稍后重试"})
-				return
-			}
-			log.Println(ip + " User Get Articles id = " + id)
-			context.JSON(200, art)
-		} else {
-			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
-		}
-	})
-}
-func RemoveArticle(ginServer *gin.Engine) {
-	ginServer.DELETE("/articles/:id", func(context *gin.Context) {
-		ip := context.ClientIP()
-		aId := context.Param("id")
-		if IsPermitted(ip, true) {
-			_, err := Dba.Exec("DELETE FROM articles WHERE id = ?", aId)
-			if err != nil {
-				context.JSON(200, gin.H{"status": "删除文章出错：" + err.Error()})
-				log.Println(color.FgRed.Render(err.Error()))
-			}
-			log.Println(color.FgYellow.Render(ip + " Admin Remove Articles, id=" + aId))
-			context.JSON(200, gin.H{"status": "成功删除文章，文章id:" + aId})
-		} else {
-			context.JSON(200, gin.H{"status": "请以管理员身份登录系统"})
-		}
-	})
-}
-
-func UploadArticle(ginServer *gin.Engine) {
-	ginServer.PUT("/articles", func(context *gin.Context) {
-		ip := context.ClientIP()
-		if IsPermitted(ip, true) {
-			var aForm ArticleForm
-			err := context.ShouldBindJSON(&aForm)
-			if err != nil {
-				log.Println(context.ClientIP() + " Admin Upload Article Failed: Wrong JSON Format " + err.Error())
-				context.JSON(200, gin.H{"status": "提交json格式不正确"})
-				return
-			}
-			if aForm.Edit == false {
-				_, err = Dba.Exec("INSERT INTO articles (title,category,content,author,time,views,href) VALUES (?,?,?,?,?,?,?)", aForm.Title, aForm.Category, aForm.Content, aForm.Author, aForm.Time, aForm.Views, aForm.Href)
-				if err != nil {
-					log.Println(color.FgRed.Render(err.Error()))
-				}
-				context.JSON(200, gin.H{"status": "成功创建新文章"})
-			} else {
-				var Aid = context.PostForm("id")
-				_, err = Dba.Exec("UPDATE articles SET title=?,category=?,content=?,author=?,time=?,views=?,href=? WHERE id=?", aForm.Title, aForm.Category, aForm.Content, aForm.Author, aForm.Time, aForm.Views, aForm.Href, Aid)
-
-				if err != nil {
-					log.Println(color.FgRed.Render(err.Error()))
-				}
-				log.Println(color.FgYellow.Render(ip + " User Modify Articles"))
-				context.JSON(200, gin.H{"status": "成功修改文章"})
-			}
-		} else {
-			context.JSON(200, gin.H{"status": "请以管理员身份登录系统"})
-		}
-	})
-}
-func SearchArticle(ginServer *gin.Engine) {
-	ginServer.GET("/search-articles", func(context *gin.Context) {
-		ip := context.ClientIP()
-		if IsPermitted(ip, false) {
-			ser := context.GetString("text")
-			log.Println(color.FgGreen.Render(ip + " User Try Search " + ser))
-			str, err := getJSON(Dba, "SELECT title FROM articles WHERE title LIKE "+ser)
-			if err != nil {
-				context.JSON(200, gin.H{"status": "Not Found"})
-				log.Println(color.FgYellow.Render(ip + " User Search " + ser + " Failed " + err.Error()))
-				return
-			}
-			context.JSON(200, str)
-		} else {
-			context.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
-		}
-	})
-}
-func grantPermission(ip, username, usertype string) int64 {
-	time := time2.Now().Unix() + 3600
-
-	result, err := Dbl.Exec("INSERT INTO currentlogins(ip,username,usertype,expiretime) VALUES (?,?,?,?)", ip, username, usertype, time)
+	result, err := Dbl.Exec("INSERT INTO login.login(phone,email,username,password,usertype) VALUES (?,?,?,?,?)", sForm.Phone, sForm.Email, sForm.Username, sForm.Pass, sForm.Usertype)
 	id, err := result.LastInsertId()
 	if err != nil {
 		log.Println(color.FgRed.Render(err.Error()))
 	}
-	return id
+	log.Println(color.FgGreen.Render(ip + " User Signup Success"))
+	fmt.Printf("Successfully Registered with ID: %d\n", id)
+	c.JSON(200, gin.H{"status": "success"})
+	return
 }
 
-func IsPermitted(ip string, isAdminOnly bool) bool {
-
-	rows, err := Dbl.Query("SELECT ip,usertype,expiretime FROM currentlogins")
+func Login(c *gin.Context) {
+	ip := c.ClientIP()
+	var lForm LoginForm
+	var sqlStr, username, password, usertype string
+	err := c.ShouldBindJSON(&lForm)
 	if err != nil {
-		log.Println(color.FgRed.Render(err.Error()))
+		log.Println(c.ClientIP() + " User Login Failed: Wrong JSON Format " + err.Error())
+		c.JSON(200, gin.H{"status": "输入格式不正确"})
+		return
 	}
-	defer rows.Close()
-	for rows.Next() {
-		var DbIp, usertype string
-		var exTime int64
-		if err = rows.Scan(&DbIp, &usertype, &exTime); err != nil {
-			return false
-		}
-		if DbIp == ip {
-			if exTime > time2.Now().Unix() {
-				if isAdminOnly {
-					if usertype == "admin" {
-						return true
-					} else {
-						return false
-					}
-				} else {
-					return true
-				}
-			} else {
-				fmt.Printf("timestamp %d is bigger than %d, signing off\n", time2.Now().Unix(), exTime)
-				_, err = Dbl.Exec("DELETE FROM currentlogins WHERE ip LIKE ?", ip)
-				if err != nil {
-					log.Println(color.FgRed.Render(err.Error()))
-				}
-			}
-		}
+	if lForm.Usr == "" || lForm.Pass == "" {
+		c.JSON(200, gin.H{"status": "用户名或密码不能为空"})
+		return
 	}
-	return false
+	if lForm.LoginType == 1 {
+		// Use phone
+		sqlStr = "SELECT username,password,usertype FROM login WHERE phone=?"
+
+	} else {
+		// Use Email
+		sqlStr = "SELECT username,password,usertype FROM login WHERE email=?"
+
+	}
+
+	rows := Db.
+	err = rows.Scan(&username, &password, &usertype)
+	if err != nil {
+		log.Println(ip + " User Login Failed " + err.Error())
+		c.JSON(200, gin.H{"status": "登录失败：请检查用户名或密码是否正确"})
+		return
+	}
+
+	if ComparePwd(password, lForm.Pass) {
+		GrantPermission( username,false ,c)
+		if usertype == "admin" {
+			GrantPermission( username,true ,c)
+		}
+		log.Printf(color.FgGreen.Render(ip + " Successfully Logged in with username: " + username))
+		c.JSON(200, gin.H{"status": "success"})
+		return
+	} else {
+		log.Println(ip + " User Login Failed")
+		c.JSON(200, gin.H{"status": "登录失败：请检查用户名或密码是否正确"})
+		return
+	}
+
 }
+func Logout(c *gin.Context) {
+	c.SetCookie("username", "", 0, "/", Conf.Domain, true, false)
+	c.SetCookie("login_token", "", 0, "/", Conf.Domain, true, false)
+	c.SetCookie("admin_token", "", 0, "/", Conf.Domain, true, false)
+	ip := c.ClientIP()
+	log.Println(ip + " User Logout")
+	c.JSON(200, gin.H{"code": 200, "msg": "success"})
+}
+func GetUserInfo(c *gin.Context) {
+	username, err := c.Cookie("username")
+	lToken, err := c.Cookie("login_token")
+	aToken, err := c.Cookie("admin_token")
+	if err != nil {
+		return
+	}
+	if VerifyUserIfAdmin(username,lToken, aToken) {
+	} else {
+		c.JSON(200, gin.H{"status": "登录已过期：请重新登录！"})
+	}
+}
+func GetArticles(c *gin.Context) {
+	ip := c.ClientIP()
+		art, err := getJSON(Dba, "SELECT * FROM articles")
+		if err != nil {
+			c.JSON(200, gin.H{"status": "获取文章失败，请稍后重试"})
+			return
+		}
+		log.Println(ip + " User Get Articles")
+		c.JSON(200, art)
+	}
+
+
+func GetArticle(c *gin.Context) {
+
+	ip := c.ClientIP()
+		id := c.Param("id")
+		sqlStr := "SELECT * FROM articles WHERE id = " + id + ";"
+		art, err := getJSON(Dba, sqlStr)
+		if err != nil {
+			c.JSON(200, gin.H{"status": "获取文章失败，请稍后重试"})
+			return
+		}
+		log.Println(ip + " User Get Articles id = " + id)
+		c.JSON(200, art)
+	}
+}
+func RemoveArticle(c *gin.Context) {
+	ip := c.ClientIP()
+	aId := c.Param("id")
+	if VerifyUserIfAdmin(ip, true) {
+		_, err := Dba.Exec("DELETE FROM articles WHERE id = ?", aId)
+		if err != nil {
+			c.JSON(200, gin.H{"status": "删除文章出错：" + err.Error()})
+			log.Println(color.FgRed.Render(err.Error()))
+		}
+		log.Println(color.FgYellow.Render(ip + " Admin Remove Articles, id=" + aId))
+		c.JSON(200, gin.H{"status": "成功删除文章，文章id:" + aId})
+	} else {
+		c.JSON(200, gin.H{"status": "请以管理员身份登录系统"})
+	}
+}
+
+func UploadArticle(c *gin.Context) {
+	ip := c.ClientIP()
+	if VerifyUserIfAdmin(ip, true) {
+		var aForm ArticleForm
+		err := c.ShouldBindJSON(&aForm)
+		if err != nil {
+			log.Println(c.ClientIP() + " Admin Upload Article Failed: Wrong JSON Format " + err.Error())
+			c.JSON(200, gin.H{"status": "提交json格式不正确"})
+			return
+		}
+		if aForm.Edit == false {
+			_, err = Dba.Exec("INSERT INTO articles (title,category,content,author,time,views,href) VALUES (?,?,?,?,?,?,?)", aForm.Title, aForm.Category, aForm.Content, aForm.Author, aForm.Time, aForm.Views, aForm.Href)
+			if err != nil {
+				log.Println(color.FgRed.Render(err.Error()))
+			}
+			c.JSON(200, gin.H{"status": "成功创建新文章"})
+		} else {
+			var Aid = c.PostForm("id")
+			_, err = Dba.Exec("UPDATE articles SET title=?,category=?,content=?,author=?,time=?,views=?,href=? WHERE id=?", aForm.Title, aForm.Category, aForm.Content, aForm.Author, aForm.Time, aForm.Views, aForm.Href, Aid)
+
+			if err != nil {
+				log.Println(color.FgRed.Render(err.Error()))
+			}
+			log.Println(color.FgYellow.Render(ip + " User Modify Articles"))
+			c.JSON(200, gin.H{"status": "成功修改文章"})
+		}
+	} else {
+		c.JSON(200, gin.H{"status": "请以管理员身份登录系统"})
+	}
+}
+
