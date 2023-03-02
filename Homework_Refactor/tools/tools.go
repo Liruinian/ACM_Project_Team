@@ -41,7 +41,7 @@ func VerifyUserIfAdmin(username string, lToken string, aToken string) bool {
 	return false
 }
 func VerifyUser(username string, lToken string) bool {
-	if VerifyToken(lToken, "user_token", username+time.Now().Format("2023-02-01")) {
+	if VerifyToken(lToken, "user_token", username+time.Now().Format("2006-01-02")) {
 		return true
 	}
 	return false

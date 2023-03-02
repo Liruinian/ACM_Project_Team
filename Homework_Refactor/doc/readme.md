@@ -45,35 +45,25 @@ https://api.liruinian.top
 
 
 
+其中密码强度分为三档，使用正则判断：
+
+- <font color="#ec6e2d">弱强度：</font>密码为六位及以上且含有数字/字母/符号
+- <font color=#70c6fc>中强度：</font>密码为七位及以上且至少含有数字/小写字母/大写字母中的两种
+- <font color=#4abf5d>高强度：</font>密码为八位及以上且必须含有数字、小写字母、大写字母、符号四种
+
 ## API 接口列表
 
 https://api.liruinian.top
 
 **POST   /user/login**
 
-发送：(raw)
+用户登录
 
 ~~~json
 {"username":"手机号或邮箱","password":"密码","login_type":1或2}
 ~~~
 
 其中login_type: 1为手机号登录 2为邮箱登录
-
-响应：(json)
-
-~~~json
-{"code":事件码,"msg":"消息文本"}
-~~~
-
-^ 之后的此类响应格式将不再赘述，如有特殊格式将会说明
-
-2001：登录失败：输入格式不正确
-
-2002：登录失败：用户名或密码不能为空
-
-2003：登录失败：请检查用户名或密码是否正确
-
-2004：登录失败：存在多个对应账号，请尝试使用其他方式登录
 
 成功响应：
 
@@ -93,47 +83,99 @@ ps: admin_token ≠ login_token
 
 **POST   /user/logout**
 
-发送：无
+用户登出
 
-接收：(json code msg响应)
-
-2021：登出失败：可能登录已过期
-
-2020：success
+无发送值 返回setCookie header
 
 **POST   /user/register**
 
-2011：注册失败：输入格式不正确
+用户注册
 
-2012：注册失败：注册部分不能有空值
-
-2013：注册失败：用户已存在 请尝试更改邮箱、手机号或用户名
-
-2010：success
+~~~json
+{"phone":"手机号","email":"邮箱","username":"用户名","password":"密码"}
+~~~
 
 **POST   /user/info**
+
+用户信息
+
+**以下api在发送请求时必须携带header，格式如下**
+
+~~~code
+username:用户名
+
+authorization:eyJhbGciOiJIUzI1NiIs...
+
+adminauth:eyJhbGciOiJIUzI1NiIsInR5...
+~~~
 
 ~~~json
 {"code":200,"msg":"success","AForm":[{"id":1,"phone":"15765505517","email":"2941330150@qq.com","username":"tim_lrn2016","usertype":"admin"}]}
 ~~~
 
-
-
-**POST   /user/edit-info**
-
 **POST   /article/list**
+
+文章列表
+
+~~~json
+{"code":200,"msg":"success","Articles":[{"id":1,"title":"文章标题","category":"文章类别","content":"文章内容","author":"作者","time":"发送时间","views":"浏览量","href":"链接"}，{ ... }]}
+~~~
 
 **POST   /article/create**
 
+创建文章
+
+*必须为admin*
+
+~~~~json
+{"edit":false,"title":"标题","category":"类别","content":"内容","author":"作者","time":"时间","views":"浏览量","href":"链接"}
+~~~~
+
 **DELETE /article/delete/:id** 
+
+删除文章
+
+*必须为admin*
 
 **POST   /article/edit**
 
+修改文章
+
+*必须为admin*
+
+~~~~json
+{"edit":true,"id":对应文章id,"title":"标题","category":"类别","content":"内容","author":"作者","time":"时间","views":"浏览量","href":"链接"}
+~~~~
+
 **POST   /article/:id** 
+
+获取单个文章
+
+返回值格式同 /article/list
 
 **POST   /article/comments/:id** 
 
+获取一个文章的所有评论
+
+~~~~json
+{"code":200,"msg":"success","Comments":[{"id":文章评论id,"articleId":对应文章id,"user":"用户名","commentText":"评论文本","time":"评论时间","thumbUp":点赞数},{...}]}
+~~~~
+
 **POST   /article/create-comment/:id**
 
+对某一个文章创建评论
+
+~~~~json
+{"commentText":"评论文本","time":"评论时间"}
+~~~~
+
 **POST   /article/like-comment/:id** 
+
+对一个评论点赞
+
+**POST   /article/remove-comment/:id** 
+
+*会判断是否为留言者或者为管理员*
+
+删除一个评论
 

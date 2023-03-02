@@ -22,7 +22,7 @@ function home() {
 }
 function search() {
   let search = document.getElementById("search");
-  if ((search.style.height = "0px")) {
+  if ((search.style.height = "200px")) {
     search.style.height = "";
   }
   if (search.classList.contains("search_open")) {
@@ -73,7 +73,7 @@ function search_load(articles) {
     searchli.classList.add("menuitem");
     searchli.classList.add("m_text");
 
-    searcha.href = "#" + art.title;
+    searcha.href = "#" + art.id;
     searchli.innerHTML = art.title;
     searcha.appendChild(searchli);
     searchol.appendChild(searcha);
@@ -134,7 +134,7 @@ function load_articles() {
           art.id +
           `)" >提交</div>
       </div>`;
-        article_cont.id = art.title;
+        article_cont.id = art.id;
         a_title.innerHTML = art.title;
         a_category.innerHTML = " <span class='b_text'>No. " + art.id + " </span>" + art.category;
         a_content.innerHTML = marked(art.content).replace("\n", "<br />");
@@ -170,6 +170,7 @@ function load_articles() {
 }
 
 var username;
+var isadmin;
 function user_classify() {
   // user admin 后端判断后返回到cookies
 
@@ -196,11 +197,13 @@ function user_classify() {
           let admin_comp = document.getElementsByClassName("admin");
           for (adm of admin_comp) {
             adm.style.display = "none";
+            isadmin = false;
           }
         } else {
           let admin_comp = document.getElementsByClassName("admin");
           for (adm of admin_comp) {
             adm.style.display = "block";
+            isadmin = true;
           }
         }
 
@@ -269,6 +272,12 @@ function getComment(id, comment_cont) {
       if (return_data.msg == "success") {
         if (return_data.Comments != null) {
           for (com of return_data.Comments) {
+            var edit;
+            if (username == com.user || isadmin == true) {
+              edit = `<div class="notetext" onclick="delcomment(` + com.id + `)">删除</div>`;
+            } else {
+              edit = "";
+            }
             comment_cont.innerHTML +=
               `
           <div class="a_comment">
@@ -282,8 +291,6 @@ function getComment(id, comment_cont) {
               `</div>
                 <div class="comment_like" onclick="likecomment(` +
               com.id +
-              `,` +
-              com.thumbUp +
               `)"><i class="fa fa-thumbs-up"> </i><span id="comment_like_` +
               com.id +
               `">` +
@@ -292,9 +299,11 @@ function getComment(id, comment_cont) {
               </div>
               <div class="c_content">` +
               com.commentText +
-              `</div><div class="a_comment_time">` +
+              `</div><div class="c_footer">` +
+              edit +
+              `<div class="a_comment_time">` +
               com.time.replace("T", " ") +
-              `</div>
+              `</div></div>
               <hr />
             </div>
           </div>`;
@@ -358,7 +367,7 @@ function comment(id) {
   };
 }
 
-function likecomment(id, thumpUp) {
+function likecomment(id) {
   var c_like = document.getElementById("comment_like_" + id);
   var httpRequest = new XMLHttpRequest();
   httpRequest.open("POST", "https://api.liruinian.top/article/like-comment/" + id, true);
@@ -381,6 +390,37 @@ function likecomment(id, thumpUp) {
         });
 
         c_like.innerHTML = String(parseInt(c_like.innerHTML) + 1);
+      } else {
+        alert(return_data.msg);
+        window.location = "index.html";
+      }
+    }
+  };
+}
+
+function delcomment(id) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.open("POST", "https://api.liruinian.top/article/remove-comment/" + id, true);
+  httpRequest.setRequestHeader("Content-type", "application/raw");
+  httpRequest.setRequestHeader("username", getCookie("username"));
+  httpRequest.setRequestHeader("authorization", getCookie("login_token"));
+  httpRequest.setRequestHeader("adminauth", getCookie("admin_token"));
+  httpRequest.send();
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+      var return_data = httpRequest.responseText;
+      return_data = JSON.parse(return_data);
+      console.log(return_data);
+      if (return_data.msg == "success") {
+        iziToast.show({
+          timeout: 2500,
+          icon: false,
+          title: "删除评论成功！",
+          message: "您可以再次留言~",
+        });
+        setTimeout(function () {
+          window.location.reload();
+        }, 2500);
       } else {
         alert(return_data.msg);
         window.location = "index.html";

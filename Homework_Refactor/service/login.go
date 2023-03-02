@@ -60,8 +60,8 @@ func Login(c *gin.Context) {
 		return
 	}
 	if tools.ComparePwd(lDBForm.Password, lForm.Pass) {
-		log.Println(lDBForm.Username + time.Now().Format("2023-02-01"))
-		loginToken := tools.CreateToken("user_token", lDBForm.Username+time.Now().Format("2023-02-01"))
+		log.Println(lDBForm.Username + time.Now().Format("2006-01-02"))
+		loginToken := tools.CreateToken("user_token", lDBForm.Username+time.Now().Format("2006-01-02"))
 		adminToken := "NOT ADMIN"
 		if lDBForm.Usertype == "admin" {
 			adminToken = tools.CreateToken("admin_token", lDBForm.Username+" is admin")

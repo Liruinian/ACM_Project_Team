@@ -9,7 +9,6 @@ import (
 	"github.com/unrolled/secure"
 	"log"
 	"net/http"
-	"time"
 )
 
 var (
@@ -69,11 +68,11 @@ func UserVerifyMiddleware() gin.HandlerFunc {
 }
 func main() {
 	r := gin.New()
+	gin.SetMode(gin.ReleaseMode)
 	r.Use(Cors())
 	if Conf.UseTLS {
 		r.Use(TlsHandler())
 	}
-	log.Println(time.Now().Format("2023-02-01"))
 	user := r.Group("/user")
 	{
 		user.POST("/login", service.Login)
@@ -96,6 +95,7 @@ func main() {
 		article.POST("/comments/:id", service.GetComments)
 		article.POST("/create-comment/:id", service.CreateComment)
 		article.POST("/like-comment/:id", service.ThumbUp)
+		article.POST("/remove-comment/:id", service.RemoveComment)
 
 	}
 	r.GET("/", func(c *gin.Context) {

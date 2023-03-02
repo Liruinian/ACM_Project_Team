@@ -508,7 +508,7 @@ blockquote {
 }
 .a_content {
   color: #999999;
-  font-size: 14px;
+  font-size: 16px;
 }
 .a_information {
   display: flex;
@@ -566,6 +566,7 @@ textarea:hover {
   display: flex;
 }
 .a_comment_time {
+  flex: 1;
   text-align: right;
 }
 .comment_text {
@@ -576,6 +577,9 @@ textarea:hover {
 }
 .c_user {
   flex: 1;
+}
+.c_footer {
+  display: flex;
 }
 .change {
   display: flex;
