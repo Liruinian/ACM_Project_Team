@@ -1,6 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import './assets/main.css'
+import "./assets/style.css";
 
-createApp(App).mount('#app')
+import "font-awesome/css/font-awesome.min.css";
+
+createApp(App).mount("#app");

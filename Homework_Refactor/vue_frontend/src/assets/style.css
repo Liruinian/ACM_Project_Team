@@ -1,0 +1,201 @@
+@font-face {
+  font-family: "BenderLight";
+  src: url(../assets/fonts/BenderLight.ttf);
+}
+html {
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  background: black url("../assets/imgs/bg.jpg") no-repeat center center;
+  text-align: center;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.fade_right {
+  animation: fade_right 1s;
+  opacity: 0;
+}
+
+.fade_left {
+  animation: fade_left 1s;
+}
+
+.fade_left_back {
+  animation: fade_left_back 1s;
+}
+.fadeOut {
+  animation: fadeOut 1s;
+  opacity: 1;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade_left {
+  0% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fade_right {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes fade_left_back {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+div {
+  margin: 5px;
+  padding: 2px 0;
+  color: white;
+}
+
+input::placeholder {
+  color: #a5a5a5;
+}
+
+.error::-webkit-input-placeholder {
+  color: red;
+}
+.error::-moz-placeholder {
+  color: red;
+}
+
+.signup_cont {
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: rgba(23, 73, 94, 0.2);
+  backdrop-filter: blur(10px);
+}
+.arrow_back {
+  width: 50px;
+}
+.b_text {
+  font-size: 18px;
+  font-weight: bold;
+}
+.text {
+  font-size: 14px;
+  color: #ebebeb;
+}
+.notetext {
+  font-size: 12px;
+  color: #b6b6b6;
+}
+
+.signup {
+  width: 320px;
+  height: 30px;
+  margin: 20px 0;
+  background-color: rgb(34, 187, 255);
+  color: white;
+  padding-top: 7px;
+}
+
+.signup:hover {
+  background-color: rgb(0, 162, 232);
+  cursor: pointer;
+}
+
+.wel_title {
+  font-size: 25px;
+}
+.wel_eng {
+  position: absolute;
+  text-align: right;
+  bottom: 20px;
+  right: 20px;
+  font-size: 70px;
+  color: rgba(255, 255, 255, 0.05);
+  padding-top: -20px;
+  pointer-events: none;
+}
+.signup_welcome {
+  width: 320px;
+  text-align: left;
+}
+
+.signup_method {
+  align-items: left;
+}

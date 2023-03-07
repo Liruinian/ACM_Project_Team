@@ -1,22 +1,10 @@
-<script>
-export default {
-  data() {
-  	return {
-      array:['a', 'b', 'c'],
-  	}
-	}
-}
+<script setup>
+import Login from "./views/LoginPage.vue"
+import loginC from "./views/LoginComp.vue"
 </script>
 
 <template>
-<Header>
-<template v-slot:ptitle>Test</template>
-</Header>
-  <main>
-    <TheWelcome />
-  </main>
+<Login>
+  <loginC></loginC>
+</Login>
 </template>
-
-<style>
-
-</style>

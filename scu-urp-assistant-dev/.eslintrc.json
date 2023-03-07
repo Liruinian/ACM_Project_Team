@@ -1,0 +1,26 @@
+{
+  "parser": "vue-eslint-parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "useJSXTextNode": true,
+    "project": "./tsconfig.json",
+    "extraFileExtensions": [".vue"],
+    "parser": "@typescript-eslint/parser",
+    "createDefaultProgram": true
+  },
+  "rules": {
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      { "functions": false, "classes": false }
+    ]
+  }
+}
