@@ -14,8 +14,7 @@ func lengthOfLongestSubstring(s string) int {
 	for _,schar := range sarr {
 		for j := 0; j < len(ansarr);j++{
 			if ansarr[j] == schar {
-                ept := []string
-				copy(ansarr,ept)
+                ansarr[j] = ""
                 break
             }else{
 				ansarr = append(ansarr, schar)
