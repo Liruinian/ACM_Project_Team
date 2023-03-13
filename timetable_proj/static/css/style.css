@@ -1,111 +1,145 @@
+html {
+  background-color: black;
+  color: white;
+}
+
+input,
+textarea {
+  background-color: black;
+  color: white;
+}
+
+button {
+  background-color: #252525;
+  color: white;
+  border: 1px solid white;
+  border-radius: 3px;
+}
+.header {
+  display: flex;
+}
+#ctime {
+  flex: 1;
+  text-align: right;
+}
 #coursesTable {
-    padding: 15px 10px;
+  padding: 15px 10px;
 }
 
 .Courses-head {
-    background-color: #edffff;
+  background-color: #363636;
 }
 
 .Courses-head > div {
-    text-align: center;
-    font-size: 14px;
-    line-height: 28px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 28px;
 }
 
-.left-hand-TextDom, .Courses-head {
-    background-color: #f2f6f7;
+.left-hand-TextDom,
+.Courses-head {
+  background-color: #333333;
 }
 
 .Courses-leftHand {
-    background-color: #f2f6f7;
-    font-size: 12px;
+  background-color: #252525;
+  font-size: 12px;
 }
 
 .Courses-leftHand .left-hand-index {
-    color: #9c9c9c;
-    margin-bottom: 4px !important;
+  color: #0a0a0a;
+  margin-bottom: 4px !important;
 }
 
 .Courses-leftHand .left-hand-name {
-    color: #666;
+  color: #949494;
 }
 
 .Courses-leftHand p {
-    text-align: center;
-    font-weight: 900;
+  text-align: center;
+  font-weight: 900;
 }
 
 .Courses-head > div {
-    border-left: none !important;
+  border-left: none !important;
 }
 
 .Courses-leftHand > div {
-    padding-top: 5px;
-    border-bottom: 1px dashed rgb(219, 219, 219);
+  padding-top: 5px;
+  border-bottom: 1px dashed rgb(219, 219, 219);
 }
 
 .Courses-leftHand > div:last-child {
-    border-bottom: none !important;
+  border-bottom: none !important;
 }
 
-.left-hand-TextDom, .Courses-head {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+.left-hand-TextDom,
+.Courses-head {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 .Courses-content > ul {
-    
-    border-bottom: 1px dashed rgb(219, 219, 219);
-    box-sizing: border-box;
+  border-bottom: 1px dashed rgb(219, 219, 219);
+  box-sizing: border-box;
 }
 
 .Courses-content > ul:last-child {
-    border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 .highlight-week {
-    color: #02a9f5 !important;
+  color: #02a9f5 !important;
 }
 
 .Courses-content li {
-    text-align: left;
-    color: #666666;
-    font-size: 14px;
-    line-height: 50px;
+  text-align: left;
+  color: #666666;
+  font-size: 14px;
+  line-height: 50px;
 }
 
-
 .Courses-content li span {
-    padding: 6px 2px;
-    box-sizing: border-box;
-    line-height: 18px;
-    border-radius: 4px;
-    white-space: normal;
-    word-break: break-all;
-    cursor: pointer;
+  padding: 6px 2px;
+  box-sizing: border-box;
+  line-height: 18px;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: break-all;
+  cursor: pointer;
 }
 
 .grid-active {
-    z-index: 9999;
+  z-index: 9999;
 }
 
 .grid-active span {
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
-.contentContainer{
-    display: flex;
+.contentContainer {
+  display: flex;
 }
-.ttContainer{
-    flex:1
+.ttContainer {
+  flex: 1;
 }
-.options{
-    width:300px
+.options {
+  width: 400px;
 }
-#timetablejson{
-    width: 100%;
-    height: 700px;
-    overflow-y: scroll;
+#timetablejson {
+  width: 90%;
+  height: 100px;
+  overflow-y: scroll;
 }
-.cname{
-    font-size: 15px;
-    font-weight: bold;
+.cname {
+  font-size: 15px;
+  font-weight: bold;
+}
+.o-item {
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+.o-title {
+  font-size: 18px;
+  font-weight: bold;
 }
