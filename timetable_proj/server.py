@@ -11,6 +11,8 @@ import re
 
 ACMURLlogin = "https://www.neauacm.cn/login/index.php"
 ACMURLupload = "https://www.neauacm.cn/upload_file/"
+ACMURLsignin = "https://www.neauacm.cn/sign_in/"
+
 NEAULogin = "http://zhjwxs.neau.edu.cn/j_spring_security_check"
 NEAUTimeTable = "http://zhjwxs.neau.edu.cn/student/courseSelect/thisSemesterCurriculum/callback"
 
